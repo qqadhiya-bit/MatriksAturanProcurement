@@ -64,8 +64,8 @@
   .results-note{max-width:1180px; margin:10px auto 0; padding:0 24px; font-size:12.5px; color:var(--ink-soft);}
 
   .layout{max-width:1180px; margin:0 auto; display:grid; grid-template-columns:285px 1fr; gap:28px; padding:22px 24px 80px;}
-  @media (max-width:900px){ .layout{grid-template-columns:1fr;} .sidebar{display:none;} .mobile-nav{display:block;} }
   .mobile-nav{display:none; margin:0 0 6px;}
+  @media (max-width:900px){ .layout{grid-template-columns:1fr;} .sidebar{display:none;} .mobile-nav{display:block;} }
   .mobile-nav select{width:100%; padding:11px 14px; border-radius:8px; border:1.5px solid var(--line); background:var(--card); font-family:inherit; font-size:14px; color:var(--ink);}
 
   .sidebar{position:sticky; top:74px; align-self:start; max-height:calc(100vh - 96px); overflow-y:auto; padding-right:4px;}
@@ -88,6 +88,16 @@
   .nav-sub{display:block; width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:6px 10px 6px 14px; border-radius:6px; font-size:11.8px; color:var(--ink-soft); line-height:1.4;}
   .nav-sub:hover{background:var(--card); color:var(--ink);}
   .nav-sub .code{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--teal); margin-right:5px;}
+  .nav-topic-list{margin:0 0 8px 14px; padding:0 0 0 28px; color:var(--ink-soft);}
+  .nav-topic-list li{padding-left:2px;}
+  .nav-topic-list li::marker{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--teal);}
+  .nav-topic{display:block; width:100%; padding:3px 6px; border:0; border-radius:5px; background:none; color:var(--ink-soft); cursor:pointer; font-family:inherit; font-size:11px; line-height:1.35; text-align:left;}
+  .nav-topic:hover{background:var(--card); color:var(--ink);}
+  .nav-article{display:flex; width:100%; align-items:baseline; gap:6px; padding:7px 8px 4px; border:0; border-radius:5px; background:none; color:var(--navybadge); cursor:pointer; font-family:'IBM Plex Sans',sans-serif; font-size:12px; line-height:1.4; text-align:left;}
+  .nav-article:hover{background:var(--card); color:var(--ink);}
+  .nav-article .article-number{flex:none; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600;}
+  .nav-article .article-name{font-weight:600;}
+  .nav-article-group{margin-bottom:3px;}
 
   .bagian{margin-bottom:14px; border:1px solid var(--line); border-radius:var(--radius); background:var(--card); box-shadow:var(--shadow); overflow:hidden; scroll-margin-top:80px;}
   .bagian-head{display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; padding:16px 20px; background:none; border:none; cursor:pointer; text-align:left;}
@@ -125,8 +135,6 @@
   .col-text p{margin:0 0 8px; line-height:1.55; text-align:justify; text-justify:inter-word;}
   .col-text p:last-child{margin-bottom:0;}
   .col-text p.cite-line{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); opacity:.8; margin-top:-2px; text-align:left;}
-  .col-text p.li{display:grid; grid-template-columns:max-content 1fr; column-gap:6px; text-align:justify;}
-  .col-text p.li .mk{white-space:nowrap; padding-right:6px;}
   .col-text p.list-line-1{padding-left:20px; text-indent:-20px;}
   .col-text p.list-line-2{padding-left:38px; text-indent:-20px;}
   .col-text p.list-line-3{padding-left:56px; text-indent:-20px;}
@@ -157,17 +165,17 @@
   .legend span{display:inline-flex; align-items:center; gap:7px;}
   .sw{width:14px; height:14px; border-radius:4px; display:inline-block; border:1px solid rgba(0,0,0,.08);}
   .sw.wajib{background:var(--red-soft); border-left:4px solid var(--red);}
-  .sw.opsional{background:var(--orange-soft); border-left:4px solid var(--orange);}
-  .sw.sesuai{background:var(--yellow-soft); border-left:4px solid var(--yellow);}
-  .stat.wajib .n{color:var(--red);} .stat.opsional .n{color:var(--orange);} .stat.sesuai .n{color:#9A7B00;}
+  .sw.sesuai{background:var(--orange-soft); border-left:4px solid var(--orange);}
+  .sw.opsional{background:var(--yellow-soft); border-left:4px solid var(--yellow);}
+  .stat.wajib .n{color:var(--red);} .stat.sesuai .n{color:var(--orange);} .stat.opsional .n{color:#9A7B00;}
   .stat.clickable{cursor:pointer;} .stat.clickable:hover{border-color:var(--ink-soft);}
   .status-chips{display:flex; gap:6px; flex-wrap:wrap;}
   .st-chip{border:1.5px solid var(--line); background:var(--card); border-radius:999px; padding:7px 12px; font-size:12.5px; font-weight:600; cursor:pointer; color:var(--ink-soft); display:inline-flex; align-items:center; gap:6px;}
   .st-chip .sw{width:11px;height:11px;}
   .st-chip.on{color:#fff; background:var(--ink); border-color:var(--ink);}
   .st-chip.on.wajib{background:var(--red); border-color:var(--red);}
-  .st-chip.on.opsional{background:var(--orange); border-color:var(--orange);}
-  .st-chip.on.sesuai{background:var(--yellow); border-color:var(--yellow); color:#3b2f00;}
+  .st-chip.on.sesuai{background:var(--orange); border-color:var(--orange);}
+  .st-chip.on.opsional{background:var(--yellow); border-color:var(--yellow); color:#3b2f00;}
   /* sidebar group filter */
   .grp-filter{display:flex; flex-direction:column; gap:5px; margin-bottom:14px;}
   .grp-btn{display:flex; align-items:center; justify-content:space-between; gap:8px; text-align:left; border:1.5px solid var(--line); background:var(--card); border-radius:8px; padding:8px 10px; font-size:12px; font-weight:600; color:var(--ink-soft); cursor:pointer;}
@@ -178,7 +186,7 @@
   .nav-grp-title:first-child{margin-top:0; padding-top:0; border-top:none;}
   .nav-item .flags{display:inline-flex; gap:3px; margin-right:4px;}
   .fl{min-width:15px; height:15px; border-radius:4px; font-size:9.5px; font-family:'IBM Plex Mono',monospace; font-weight:700; display:inline-flex; align-items:center; justify-content:center; padding:0 3px; color:#fff;}
-  .fl.wajib{background:var(--red);} .fl.opsional{background:var(--orange);} .fl.sesuai{background:var(--yellow); color:#3b2f00;}
+  .fl.wajib{background:var(--red);} .fl.sesuai{background:var(--orange);} .fl.opsional{background:var(--yellow); color:#3b2f00;}
   /* group banner */
   .group-banner{margin:6px 0 14px; padding:16px 20px; border-radius:var(--radius); background:var(--ink); color:#fff; box-shadow:var(--shadow);}
   .group-banner h2{font-size:17px; color:#fff;}
@@ -188,11 +196,11 @@
   .cols.n1{grid-template-columns:1fr;} .cols.n2{grid-template-columns:repeat(2,1fr);} .cols.n3{grid-template-columns:repeat(3,1fr);}
   @media (max-width:760px){ .cols.n1,.cols.n2,.cols.n3{grid-template-columns:1fr;} }
   .col.st-wajib{background:var(--red-soft); box-shadow:inset 4px 0 0 var(--red);}
-  .col.st-opsional{background:var(--orange-soft); box-shadow:inset 4px 0 0 var(--orange);}
-  .col.st-sesuai{background:var(--yellow-soft); box-shadow:inset 4px 0 0 var(--yellow);}
-  .topic-card.st-wajib{border-color:#EBC3BF;} .topic-card.st-opsional{border-color:#F1D2AE;} .topic-card.st-sesuai{border-color:#EADB98;}
+  .col.st-sesuai{background:var(--orange-soft); box-shadow:inset 4px 0 0 var(--orange);}
+  .col.st-opsional{background:var(--yellow-soft); box-shadow:inset 4px 0 0 var(--yellow);}
+  .topic-card.st-wajib{border-color:#EBC3BF;} .topic-card.st-sesuai{border-color:#F1D2AE;} .topic-card.st-opsional{border-color:#EADB98;}
   .pill{font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:3px 8px; border-radius:999px; flex:none;}
-  .pill.wajib{background:var(--red); color:#fff;} .pill.opsional{background:var(--orange); color:#fff;} .pill.sesuai{background:var(--yellow); color:#3b2f00;}
+  .pill.wajib{background:var(--red); color:#fff;} .pill.sesuai{background:var(--orange); color:#fff;} .pill.opsional{background:var(--yellow); color:#3b2f00;}
   .col-text p.li{display:grid; grid-template-columns:auto 1fr; column-gap:7px; text-align:justify;}
   .col-text p.li .mk{min-width:20px; white-space:nowrap;}
   .col-text p.caps{font-weight:700; font-size:12px; letter-spacing:.02em; text-align:left;}
@@ -202,8 +210,8 @@
   .in-tbl th,.in-tbl td{border:1px solid var(--line); padding:5px 7px; vertical-align:top; text-align:left;}
   .in-tbl th{background:var(--navybadge); color:#fff; font-weight:600;}
   .note-block.st-wajib{background:var(--red-soft);} .note-block.st-wajib .extra-label{background:var(--red); color:#fff;} .note-block.st-wajib .extra-text{color:#7A1F16; font-style:normal;}
-  .note-block.st-opsional{background:var(--orange-soft);} .note-block.st-opsional .extra-label{background:var(--orange); color:#fff;} .note-block.st-opsional .extra-text{color:#7A3E05; font-style:normal;}
-  .note-block.st-sesuai{background:var(--yellow-soft);} .note-block.st-sesuai .extra-label{background:var(--yellow); color:#3b2f00;} .note-block.st-sesuai .extra-text{color:#5E4B00; font-style:normal;}
+  .note-block.st-sesuai{background:var(--orange-soft);} .note-block.st-sesuai .extra-label{background:var(--orange); color:#fff;} .note-block.st-sesuai .extra-text{color:#7A3E05; font-style:normal;}
+  .note-block.st-opsional{background:var(--yellow-soft);} .note-block.st-opsional .extra-label{background:var(--yellow); color:#3b2f00;} .note-block.st-opsional .extra-text{color:#5E4B00; font-style:normal;}
   .note-block .extra-text.empty{font-style:italic;}
   .nav-grp-title{display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; background:none; border:none; cursor:pointer; font-family:inherit; text-align:left; padding:8px 4px 6px;}
   .nav-grp-title .gname{font-size:11px; text-transform:uppercase; letter-spacing:.07em; font-weight:700; color:var(--navybadge);}
@@ -257,16 +265,99 @@
   .toast{padding:8px 14px; font-size:12.5px;}
   /* Analisis & Catatan seragam, tidak miring */
   .extra-block .extra-text, .note-block .extra-text, .analysis-block .extra-text,
-  .note-block.st-wajib .extra-text, .note-block.st-opsional .extra-text, .note-block.st-sesuai .extra-text{font-style:normal !important; color:var(--ink) !important; text-align:justify;}
+  .note-block.st-wajib .extra-text, .note-block.st-sesuai .extra-text, .note-block.st-opsional .extra-text{font-style:normal !important; color:var(--ink) !important; text-align:justify;}
   .extra-block .extra-text.empty{color:var(--ink-soft) !important; text-align:left;}
-
-  .note-block, #statusChips, .nav-grp-title, .group-banner, .st-pick{display:none !important;}
-  .nav-grp + .nav-grp{border-top:none;}
 
   .home-btn{flex:none; width:38px; height:38px; border-radius:50%; border:1.5px solid var(--line); background:var(--card); color:var(--ink); display:inline-flex; align-items:center; justify-content:center; cursor:pointer;}
   .title-row{display:flex; align-items:center; gap:14px;}
   .title-row h1{margin:0;}
   .home-btn:hover{border-color:var(--navybadge); color:var(--navybadge);}
+  .status-legend{max-width:none; margin:18px 0 0; padding:12px 0 0; border-top:1px solid var(--line); font-size:12.5px; line-height:1.5; color:var(--ink-soft);}
+  .status-legend summary{width:max-content; cursor:pointer; font-weight:600; color:var(--ink-soft);}
+  .status-legend-content{display:flex; flex-direction:column; gap:6px; margin-top:8px;}
+  .status-legend span{display:flex; align-items:flex-start; gap:7px;}
+  .status-legend b{color:var(--ink);}
+  .status-legend .sw{width:12px; height:12px; border-radius:3px; display:inline-block; flex:none;}
+  .status-legend .sw.none{background:var(--card); border:1px solid var(--line);}
+
+  /* ===== Daftar bab (sidebar) dirapikan ===== */
+  .layout{grid-template-columns:330px minmax(0,1fr);}
+  .sidebar{padding-right:8px;}
+  .sidebar-title{display:none;}
+  .nav-grp{background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:10px; overflow:hidden;}
+  .nav-grp + .nav-grp{border-top:1px solid var(--line); margin-top:0; padding-top:0;}
+  .nav-grp-title{display:flex; align-items:center; gap:10px; width:100%; padding:12px 12px; background:var(--navybadge-soft); border:none; cursor:pointer; text-align:left;}
+  .nav-grp-title .gnum{flex:none; width:24px; height:24px; border-radius:50%; background:var(--navybadge); color:#fff; font-size:12px; font-weight:700; display:inline-flex; align-items:center; justify-content:center;}
+  .nav-grp-title .gtxt{flex:1; min-width:0; display:flex; flex-direction:column; gap:1px;}
+  .nav-grp-title .gname{font-size:14px; font-weight:700; text-transform:none; letter-spacing:0; color:var(--ink);}
+  .nav-grp-title .gsub{font-size:11.5px; color:var(--ink-soft);}
+  .nav-grp-title .gcnt{font-size:11.5px;}
+  .nav-grp-body{padding:6px;}
+  .nav-item{display:grid; grid-template-columns:52px 1fr auto; align-items:start; gap:8px; padding:9px 8px; font-size:13.5px; line-height:1.35; color:var(--ink);}
+  .nav-item .code{font-size:11.5px; font-weight:600; color:var(--gold); padding-top:2px; white-space:nowrap;}
+  .nav-item .ttl{white-space:normal; overflow:visible; text-overflow:clip; font-weight:500;}
+  .nav-item .meta{display:inline-flex; align-items:center; gap:6px; padding-top:1px;}
+  .nav-item .cnt{font-size:11px;}
+  .nav-subs{margin:2px 0 8px 60px; padding-left:8px; border-left:2px solid var(--line-soft);}
+  .nav-sub{display:grid; grid-template-columns:auto 1fr; gap:6px; padding:6px 8px; font-size:12.5px; line-height:1.35; color:var(--ink-soft);}
+  .nav-sub .code{font-size:11px; margin:0; white-space:nowrap;}
+  .nav-group.open > .nav-item{background:var(--paper);}
+  .accordion-actions{margin-bottom:10px;}
+  .status-legend{padding-bottom:4px;}
+  .status-legend-content{flex-direction:row; flex-wrap:wrap; gap:6px 22px;}
+  .status-legend span{display:inline-flex; align-items:center;}
+  .nav-sub-group{display:block;}
+  .sidebar{top:134px; max-height:calc(100vh - 150px);}
+  .bagian{scroll-margin-top:140px;} .subsection{scroll-margin-top:146px;} .topic-card{scroll-margin-top:146px;}
+  @media (max-width:1100px){ .layout{grid-template-columns:290px minmax(0,1fr);} }
+
+  /* ===== UI/UX tahap 2 ===== */
+  .toolbar{padding:8px 24px;} .toolbar-inner{gap:8px 10px;}
+  #search{padding:9px 40px 9px 38px; font-size:14px;}
+  .st-chip{padding:5px 11px; font-size:12px;} .chip-toggle{padding:5px 11px 5px 9px;} .side-toggle{padding:6px 12px;}
+  .col{font-size:12.6px; line-height:1.55; padding:12px 14px;}
+  .col-text p, .col-text p.li, .col-text p.plain-line, .col-text p[data-lvl]{text-align:justify !important; text-justify:inter-word; hyphens:auto; -webkit-hyphens:auto;}
+  .col-text p.cite-line, .col-text p.caps{text-align:left !important;}
+  @media (min-width:761px){ .cols[style*="--tpl"]{grid-template-columns:var(--tpl) !important;} }
+  .extras.two{display:grid; grid-template-columns:1fr 1fr;}
+  .extras.two > .extra-block + .extra-block{border-left:1px solid var(--line-soft);}
+  @media (max-width:760px){ .extras.two{grid-template-columns:1fr;} .extras.two > .extra-block + .extra-block{border-left:none;} }
+  .extra-block, .extra-block .extra-text, .note-block .extra-text, .analysis-block .extra-text{text-align:justify !important; font-size:12.2px; line-height:1.55;} .extra-block .extra-text.empty{text-align:left !important;}
+  .nav-item.cur{background:var(--navybadge-soft); box-shadow:inset 3px 0 0 var(--navybadge);}
+  .nav-item.cur .ttl{font-weight:700;}
+  .topic-title{font-size:13.5px;}
+  .bagian-head h2{font-size:16px;}
+  .subsection-head h3{font-size:14px;}
+  .nav-item{font-size:12.8px !important;} .nav-sub{font-size:12px !important;} .nav-grp-title .gname{font-size:13.5px !important;}
+  .group-banner p{text-align:justify;}
+  @media (max-width:760px){
+    .toolbar{padding:8px 12px;} .hero{padding:24px 14px 18px;} .layout{padding:14px 12px 70px;}
+    .status-chips{flex-wrap:nowrap; overflow-x:auto; width:100%; padding-bottom:4px; -webkit-overflow-scrolling:touch;}
+    .st-chip{flex:none; white-space:nowrap;}
+    .toggles{flex-wrap:nowrap; overflow-x:auto; width:100%;} .chip-toggle{flex:none;}
+    .bagian-body{padding:4px 12px 14px;} .col{padding:12px;} .stat{min-width:92px; padding:8px 12px;}
+    .group-banner{padding:14px 14px;}
+  }
+  @media (max-width:900px){ .layout{grid-template-columns:minmax(0,1fr) !important;} .sidebar{display:none !important;} .mobile-nav{display:block; position:sticky; top:0; z-index:30;} }
+  .status-legend-content > span{display:block !important; line-height:1.5;} .status-legend .sw{display:inline-block !important;}
+  .status-legend .sw{margin-right:7px; vertical-align:-2px;}
+  .status-legend-content{display:grid !important; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px 22px !important;}
+  @media (max-width:760px){ .toolbar{position:static;} .mobile-nav{top:0;} .save-mini{margin-left:auto;} .group-banner p{text-align:left;} }
+  @media print{ .toolbar,.sidebar,.top-btn,.mobile-nav,.pen,.save-mini{display:none !important;} .layout{display:block;} .bagian-body{display:block !important;} }
+
+  .filter-row{display:flex; align-items:center; gap:8px; flex:1 0 100%; min-width:0;}
+  .filter-row .side-toggle{flex:none; margin-right:4px;}
+  .filter-row .status-chips{flex:0 1 auto; min-width:0;}
+  .filter-row .save-mini{margin-left:auto;}
+  @media (max-width:760px){ .filter-row .status-chips{flex:1 1 auto; overflow-x:auto; flex-wrap:nowrap;} }
+  .note-block, #statusChips, .group-banner, .st-pick{display:none !important;}
+  .nav-grp-title{display:none !important;}
+  .extras .analysis-block{grid-column:1 / -1;}
+  .nav-grp-title .gsub{text-transform:none; letter-spacing:0; font-weight:400;}
+  .filter-row{display:contents;}
+  .filter-row .side-toggle{order:-1; margin-right:0;}
+  .filter-row .save-mini{order:99; margin-left:0;}
+  @media (max-width:760px){ .filter-row{display:flex; flex:1 0 100%; align-items:center; gap:8px;} .filter-row .side-toggle,.filter-row .save-mini{order:0;} .filter-row .save-mini{margin-left:auto;} }
 </style></head><body>
 <div class="hero"><div class="hero-inner">
   <div class="title-row"><button class="home-btn" id="homeBtn" title="Kembali ke beranda" aria-label="Kembali ke beranda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg></button><h1>Matriks Perbandingan Peraturan Perundang-Undangan</h1></div>
@@ -274,15 +365,13 @@
   <div class="stats" id="stats"></div>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
-  <button class="side-toggle" id="sideToggle">☰ <span>Sembunyikan Daftar BAB</span></button>
   <div class="search-wrap">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input id="search" type="text" placeholder="" autocomplete="off">
     <span class="kbd" id="kbdHint">/</span><button class="clear-btn" id="clearBtn" aria-label="Bersihkan pencarian">✕</button>
   </div>
   <div class="toggles" id="colToggles"></div>
-  <div class="status-chips" id="statusChips"></div>
-  <button class="save-mini" id="saveFile" aria-label="Simpan ke file"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button>
+  <div class="filter-row"><button class="side-toggle" id="sideToggle">☰ <span>Sembunyikan Daftar BAB</span></button><div class="status-chips" id="statusChips"></div><button class="save-mini" id="saveFile" aria-label="Simpan ke file"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button></div>
 </div><div class="results-note" id="resultsNote"></div></div>
 <div class="layout">
   <nav class="sidebar"><div class="accordion-actions"><button class="mini-btn" id="openAll">Buka Semua</button><button class="mini-btn" id="closeAll">Tutup Semua</button></div><div id="navList"></div></nav>
@@ -297,7 +386,9 @@ const PRISTINE = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
 const GROUPS = JSON.parse(document.getElementById('matrix-data').textContent);
 const COLMETA = {injourney:{label:'Perdir IAS',cls:'injourney'}, apindo:{label:'Perpres 46/2025',cls:'apindo'}, draft:{label:'Permen BUMN 2/2023',cls:'draft'}};
 const STATUS = {wajib:{label:'Perlu ditambahkan', short:'Wajib'}, opsional:{label:'Opsional', short:'Opsional'}, sesuai:{label:'Perlu disesuaikan', short:'Sesuaikan'}};
-const GROUPNAME = ['Struktur InJourney','Hanya di Apindo','Hanya di Draft IAS'];
+const NONE_LABEL = 'Tidak ada celah', NONE_DESC = 'Sudah diatur di Draft IAS atau tidak perlu diatur.';
+const GROUPNAME = ['Daftar BAB'];
+const GROUPHELP = ['Mengikuti susunan Perdir IAS'];
 function splitHeading(h){
   const m = h.match(/^(.*?)\s(?:—|-){1,2}\s(.*)$/); if(m) return {code:m[1].trim(), title:m[2].trim()};
   const m2 = h.match(/^([A-Z]{1,2}\.)\s+(.*)$/); if(m2) return {code:m2[1], title:m2[2]};
@@ -316,9 +407,7 @@ function renderCell(items,q){
     if(it.lvl===-1) return `<p class="cite-line" data-lvl="-1">${highlight(t,q)}</p>`;
     if(it.lvl>=1){
       const pad=(it.lvl-1)*18, k=t.indexOf('\t');
-      const numbered=t.match(/^((?:\([A-Za-z0-9]+\)|[A-Za-z0-9]+[.)]))(?:\s+|\t+)(.*)$/);
-      if(k>-1 && k<12) return `<p class="li" data-lvl="${it.lvl}" style="margin-left:${pad}px"><span class="mk">${highlight(t.slice(0,k).trim(),q)}</span><span class="tx">${highlight(t.slice(k+1),q)}</span></p>`;
-      if(numbered) return `<p class="li" data-lvl="${it.lvl}" style="margin-left:${pad}px"><span class="mk">${highlight(numbered[1],q)}</span><span class="tx">${highlight(numbered[2],q)}</span></p>`;
+      if(k>-1 && k<12) return `<p class="li" data-lvl="${it.lvl}" style="margin-left:${pad}px"><span class="mk">${highlight(t.slice(0,k),q)}</span><span class="tx">${highlight(t.slice(k+1),q)}</span></p>`;
       return `<p data-lvl="${it.lvl}" style="margin-left:${pad+27}px; text-align:justify">${highlight(t.replace(/\t/g,' '),q)}</p>`;
     }
     if(isCaps(t)) return `<p class="caps" data-lvl="0">${highlight(t,q)}</p>`;
@@ -326,11 +415,66 @@ function renderCell(items,q){
   }).join('');
 }
 const itemsText = items => items.map(i=> i.tbl ? i.tbl.flat().join(' ') : i.text).join(' ');
+function isNoneCell(c){ const t=(c&&c[0]&&c[0].text)||''; return !c||!c.length||t.startsWith('Tidak diatur')||t.startsWith('Tidak didefinisikan'); }
 function hay(r){ return norm(r.topik+' '+r.cells.map(itemsText).join(' ')+' '+(r.analisis||'')+' '+(r.catatan||'')); }
 
+const PASAL_TITLES = {
+  1:"Definisi", 2:"Ruang Lingkup Pedoman Pengadaan Barang dan/atau Jasa", 3:"Tujuan Pengadaan Barang dan/atau Jasa",
+  4:"Prinsip Pengadaan Barang dan/atau Jasa", 5:"Etika Pengadaan Barang dan/atau Jasa",
+  6:"Kegiatan Perencanaan, Implementasi, Pengawasan dan Pelaporan", 7:"Pelaksana Pengadaan Barang dan/atau Jasa",
+  8:"Pejabat Yang Berwenang", 9:"Pejabat Pengadaan", 10:"Panitia Pengadaan",
+  11:"Unit Pemrakarsa dan Unit Teknis", 12:"Penyedia Barang dan/atau Jasa",
+  13:"Peningkatan TKDN, UMK, dan Sinergi dengan BUMN", 14:"Identifikasi dan Strategi Category Management",
+  15:"Identifikasi dan Strategi Sourcing", 16:"Persyaratan Penyedia dan Prakualifikasi",
+  17:"Manajemen Prakualifikasi Penyedia", 18:"Strategi dan Perencanaan Pengembangan Penyedia",
+  19:"Standardisasi Kontrak", 20:"Analisis Kebutuhan Kontrak Pengadaan Substansial",
+  21:"Implementasi Strategi Category Management", 22:"Kategorisasi Pengadaan Berdasarkan Kapabilitas Pekerjaan",
+  23:"Pengadaan Barang dan/atau Jasa melalui Swakelola", 24:"Pengadaan Barang dan/atau Jasa melalui Penyedia",
+  25:"Tender Umum/Seleksi Umum", 26:"Tender Terbatas/Seleksi Terbatas", 27:"Penunjukan Langsung",
+  28:"Pengadaan Langsung", 29:"Tender Internasional", 30:"E-Catalogue", 31:"Dokumen Pengadaan",
+  32:"Rencana Anggaran Biaya (RAB) / Engineering Estimate (EE)", 33:"Harga Perkiraan Sendiri (HPS) / Owner's Estimate (OE)",
+  34:"Uang Muka", 35:"Jaminan", 36:"Retensi", 37:"Pengumuman Tender",
+  38:"Metode Pembukaan Dokumen Penawaran", 39:"Metode Evaluasi Penawaran", 40:"Pengumuman Pemenang",
+  41:"Sanggahan", 42:"Tender/Seleksi Ditunda", 43:"Tender/Seleksi Gagal", 44:"Tender Batal",
+  45:"Pengadaan Barang dan/atau Jasa Jangka Panjang", 46:"Pengadaan Barang dan/atau Jasa Substansial",
+  47:"Pengadaan Barang dan/atau Jasa Tidak Mengikat", 48:"Joint Procurement", 49:"Pengadaan Kondisi Khusus",
+  50:"Penunjukan Langsung Keadaan Mendesak", 51:"Bentuk Perikatan", 52:"Manajemen Kontrak",
+  53:"Kontrak Berulang (Repeat Order)", 54:"Keadaan Kahar (Force Majeure)", 55:"Penundaan Pelaksanaan Kontrak",
+  56:"Penghentian Kontrak", 57:"Pengakhiran Kontrak", 58:"Pemutusan Kontrak",
+  59:"Pengalihan dan/atau Subkontrak", 60:"Perubahan Kontrak", 61:"Pengawasan Pelaksanaan Pengadaan",
+  62:"Pengawasan Penggunaan Produk Dalam Negeri", 63:"Pengawasan dan Sanksi atas Ketidakpatuhan TKDN",
+  64:"Serah Terima Barang dan/atau Jasa", 65:"Pengelolaan Kriteria Pengadaan Barang dan/atau Jasa",
+  66:"Pengelolaan Penilaian Penyedia", 67:"Pengawasan Pengelolaan Kontrak",
+  68:"Pengawasan dan Penyelesaian Persengketaan", 69:"Pelaporan Perencanaan Pengadaan",
+  70:"Pelaporan Evaluasi Penyedia", 71:"Pelaporan Kontrak", 72:"Pelaporan Potensi Sengketa",
+  73:"Tujuan Kebijakan Manajemen Kompetensi dan Adaptasi Perubahan", 74:"Pengembangan Kompetensi",
+  75:"Penguatan Kapabilitas Perumusan dan Validasi HPS",
+  76:"Penguatan Kapabilitas Manajemen Kontrak dari Perspektif Hukum dan Kepatuhan",
+  77:"Penguatan Kapabilitas Pengambilan Keputusan Berbasis Risiko dalam Pengadaan",
+  78:"Ketentuan Umum Teknologi", 79:"Manfaat Platform Teknologi",
+  80:"Perencanaan Manajemen Risiko pada Pengadaan", 81:"Strategi Mitigasi Risiko terhadap Penyedia dan Kontrak",
+  82:"Pengawasan Berbasis Indikator Risiko", 83:"Pelaporan Manajemen Risiko pada Pengadaan",
+  84:"Pengadaan Yang Dikecualikan", 85:"Ketentuan Peralihan", 86:"Ketentuan Penutup"
+};
+function pasalNumber(row){
+  const citation = row.cells[0].map(item=>item.text||item.c||'').join(' ');
+  const match = citation.match(/\[Pasal\s+(\d+)\b/i);
+  return match ? Number(match[1]) : null;
+}
 const BABS = [];
-GROUPS.forEach((g,gi)=>{ g._count=0; g.babs.forEach(b=>{ b._gi=gi; b._h=splitHeading(b.heading); b._hasNamedSub=b.subsections.some(s=>s.heading); b._count=0;
-  b.subsections.forEach(s=>{ s._h = s.heading ? splitHeading(s.heading) : {code:'',title:''}; b._count += s.rows.length; s.rows.forEach(r=> r._hay = hay(r)); });
+GROUPS.forEach((g,gi)=>{ g._count=0; g.babs.forEach(b=>{ b._gi=gi; b._h=splitHeading(b.heading); b._hasNamedSub=b.subsections.some(s=>s.heading); b._hasTopics=gi===0&&b.subsections.some(s=>s.rows.length); b._count=0;
+  b.subsections.forEach(s=>{ s._h = s.heading ? splitHeading(s.heading) : {code:'',title:''}; b._count += s.rows.length; s.rows.forEach(r=> r._hay = hay(r));
+    if(gi===0){
+      const articles = new Map();
+      s.rows.forEach((r,ri)=>{
+        const number = pasalNumber(r);
+        if(number===null) return;
+        if(!articles.has(number)) articles.set(number,{number,rows:[],firstRow:ri});
+        articles.get(number).rows.push({row:r,rowIndex:ri});
+      });
+      s._navArticles = [...articles.values()].sort((a,b)=>a.number-b.number);
+    }
+  });
   g._count += b._count; b._bi = BABS.length; BABS.push(b); }); });
 const TOTAL = GROUPS.reduce((a,g)=>a+g._count,0);
 const SUBCOUNT = BABS.reduce((a,b)=>a+b.subsections.filter(s=>s.heading).length,0);
@@ -357,8 +501,9 @@ function drawStats(){
 statsEl.addEventListener('click', e=>{ const s=e.target.closest('[data-st]'); if(s) setStatus(statusFilter===s.dataset.st?'':s.dataset.st); });
 const stChips = document.getElementById('statusChips');
 function drawStatusChips(){
-  stChips.innerHTML = `<button class="st-chip ${statusFilter===''?'on':''}" data-st="">Semua status</button>` + Object.entries(STATUS).map(([k,v])=>`<button class="st-chip ${k} ${statusFilter===k?'on':''}" data-st="${k}"><span class="sw ${k}"></span>${v.label} (${FL[k]})</button>`).join('')
-    + `<button class="st-chip nonec ${statusFilter==='none'?'on':''}" data-st="none"><span class="sw none"></span>Tanpa warna (${FL.none})</button>`;
+  stChips.innerHTML = `<button class="st-chip ${statusFilter===''?'on':''}" data-st="">Semua prioritas</button>` + Object.entries(STATUS).map(([k,v])=>`<button class="st-chip ${k} ${statusFilter===k?'on':''}" data-st="${k}" title="${v.desc}"><span class="sw ${k}"></span>${v.label} (${FL[k]})</button>`).join('')
+    + `<button class="st-chip nonec ${statusFilter==='none'?'on':''}" data-st="none" title="${NONE_DESC}"><span class="sw none"></span>${NONE_LABEL} (${FL.none})</button>`;
+  const lg=document.getElementById('statusLegend'); if(lg) lg.innerHTML = Object.entries(STATUS).map(([k,v])=>`<span><span class="sw ${k}"></span><b>${v.label}</b>: ${v.desc}</span>`).join('') + `<span><span class="sw none"></span><b>${NONE_LABEL}</b>: ${NONE_DESC}</span>`;
 }
 stChips.addEventListener('click', e=>{ const b=e.target.closest('[data-st]'); if(b) setStatus(b.dataset.st); });
 function setStatus(st){ statusFilter=st; if(st) openState=BABS.map(()=>true); render(); }
@@ -369,29 +514,40 @@ colToggles.addEventListener('change', e=>{ if(e.target.dataset.col){ colState[e.
 function resetSearch(){ query=''; searchInput.value=''; clearBtn.style.display='none'; document.getElementById('kbdHint').style.display='block'; }
 function goToBab(bi){ resetSearch(); openState[bi]=true; navOpenState[bi]=true; render(); setTimeout(()=>{ const el=document.getElementById('bab-'+bi); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },30); }
 function goToSub(bi,si){ resetSearch(); openState[bi]=true; navOpenState[bi]=true; render(); setTimeout(()=>{ const el=document.getElementById('sub-'+bi+'-'+si); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },30); }
+function goToTopic(bi,si,ri){ resetSearch(); openState[bi]=true; navOpenState[bi]=true; render(); setTimeout(()=>{ const el=document.getElementById('row-'+bi+'-'+si+'-'+ri); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },30); }
 
 const chevSvg = '<svg class="chev-mini" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 6 15 12 9 18"/></svg>';
 const navList = document.getElementById('navList');
 function renderSidebar(){
   navList.innerHTML = GROUPS.map((g,gi)=>`<div class="nav-grp ${grpOpen[gi]?'open':''}">
-    <button class="nav-grp-title" data-grp="${gi}"><span class="gname">${GROUPNAME[gi]}</span><span class="gcnt">${g._count}<svg class="gchev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 6 15 12 9 18"/></svg></span></button>
-    <div class="nav-grp-body">${g.babs.map(b=>{ const bi=b._bi; return `<div class="nav-group ${navOpenState[bi]?'open':''}">
-      <button class="nav-item" data-bab="${bi}" data-toggle="${b._hasNamedSub?1:0}"><span class="left"><span class="code">${esc(b._h.code)}</span><span class="ttl">${esc(b._h.title)}</span></span><span class="left" style="flex:none;"><span class="flags">${flagsHtml(b._flags)}</span><span class="cnt">${b._count}</span>${b._hasNamedSub?chevSvg:''}</span></button>
-      ${b._hasNamedSub?`<div class="nav-subs">${b.subsections.map((s,si)=> s._h.title?`<button class="nav-sub" data-bab="${bi}" data-sub="${si}"><span class="code">${esc(s._h.code)}</span>${esc(s._h.title)}</button>`:'').join('')}</div>`:''}</div>`; }).join('')}</div></div>`).join('');
+    <button class="nav-grp-title" data-grp="${gi}"><span class="gnum">${gi+1}</span><span class="gtxt"><span class="gname">${GROUPNAME[gi]}</span><span class="gsub">${GROUPHELP[gi]}</span></span><span class="gcnt">${g._count}<svg class="gchev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 6 15 12 9 18"/></svg></span></button>
+    <div class="nav-grp-body">${g.babs.map(b=>{ const bi=b._bi, subs=b.subsections.filter(s=>s._h.title), hasChildren=subs.length>0; return `<div class="nav-group ${navOpenState[bi]?'open':''}">
+      <button class="nav-item" data-bab="${bi}" data-toggle="${hasChildren?1:0}"><span class="code">${esc(b._h.code)}</span><span class="ttl">${esc(b._h.title)}</span><span class="meta"><span class="flags">${flagsHtml(b._flags)}</span><span class="cnt">${b._count}</span>${hasChildren?chevSvg:''}</span></button>
+      ${hasChildren?`<div class="nav-subs">${b.subsections.map((s,si)=>s._h.title?`<button class="nav-sub" data-bab="${bi}" data-sub="${si}"><span class="code">${esc(s._h.code)}</span><span class="stt">${esc(s._h.title)}</span></button>`:'').join('')}</div>`:''}
+    </div>`; }).join('')}</div></div>`).join('');
 }
 navList.addEventListener('click', e=>{
   const g=e.target.closest('.nav-grp-title'); if(g){ const gi=+g.dataset.grp; grpOpen[gi]=!grpOpen[gi]; renderSidebar(); return; }
+  const topic=e.target.closest('.nav-topic, .nav-article'); if(topic){ goToTopic(+topic.dataset.bab,+topic.dataset.sub,+topic.dataset.row); return; }
   const sub=e.target.closest('.nav-sub'); if(sub){ goToSub(+sub.dataset.bab,+sub.dataset.sub); return; }
   const it=e.target.closest('.nav-item'); if(!it) return; const bi=+it.dataset.bab;
   if(it.dataset.toggle==='1'){ navOpenState[bi]=!navOpenState[bi]; renderSidebar(); } else goToBab(bi);
 });
+
+let curBab=-1, spyIO=null;
+function markCur(){ document.querySelectorAll('.nav-item.cur').forEach(e=>e.classList.remove('cur')); const el=document.querySelector('.nav-item[data-bab="'+curBab+'"]'); if(el) el.classList.add('cur'); }
+function spy(){
+  if(spyIO) spyIO.disconnect();
+  spyIO=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ const id=+e.target.id.replace('bab-',''); if(id!==curBab){ curBab=id; markCur(); } } }); },{rootMargin:'-140px 0px -65% 0px'});
+  document.querySelectorAll('.bagian').forEach(b=>spyIO.observe(b)); markCur();
+}
 const mobileSelect=document.getElementById('mobileSelect');
-mobileSelect.innerHTML='<option value="">Lompat ke bab…</option>'+BABS.map(b=>`<optgroup label="${esc((GROUPNAME[b._gi]?GROUPNAME[b._gi]+' · ':'')+b._h.code+' — '+b._h.title)}">${b._hasNamedSub?b.subsections.map((s,si)=>s._h.title?`<option value="${b._bi}-${si}">${esc(s._h.code+' — '+s._h.title)}</option>`:'').join(''):`<option value="${b._bi}-x">(seluruh isi bab)</option>`}</optgroup>`).join('');
-mobileSelect.addEventListener('change',()=>{ const [bi,si]=mobileSelect.value.split('-'); if(bi==='') return; if(si==='x') goToBab(+bi); else goToSub(+bi,+si); });
+mobileSelect.innerHTML='<option value="">Lompat ke bab…</option>'+GROUPS.map((g,gi)=>`<optgroup label="${GROUPS.length>1?esc(GROUPNAME[gi]):''}">${g.babs.map(b=>`<option value="${b._bi}-x">${esc(b._h.code+' — '+b._h.title)}</option>`+b.subsections.map((s,si)=>s._h.title?`<option value="${b._bi}-${si}">&nbsp;&nbsp;&nbsp;${esc(s._h.code+' '+s._h.title)}</option>`:'').join('')).join('')}</optgroup>`).join('');
+mobileSelect.addEventListener('change',()=>{ const [bi,si,ri]=mobileSelect.value.split('-'); if(bi==='') return; if(si==='x') goToBab(+bi); else if(ri!==undefined) goToTopic(+bi,+si,+ri); else goToSub(+bi,+si); });
 document.getElementById('openAll').addEventListener('click',()=>{ openState=BABS.map(()=>true); navOpenState=BABS.map(()=>true); grpOpen=GROUPS.map(()=>true); render(); });
 document.getElementById('closeAll').addEventListener('click',()=>{ openState=BABS.map(()=>false); navOpenState=BABS.map(()=>false); render(); });
 const sideToggle=document.getElementById('sideToggle');
-sideToggle.addEventListener('click',()=>{ const hidden=document.querySelector('.layout').classList.toggle('no-side'); sideToggle.querySelector('span').textContent = hidden?'Tampilkan daftar BAB':'Sembunyikan Daftar BAB'; });
+sideToggle.addEventListener('click',()=>{ const hidden=document.querySelector('.layout').classList.toggle('no-side'); sideToggle.querySelector('span').textContent = hidden?'Tampilkan daftar BAB':'Sembunyikan daftar BAB'; });
 
 const PEN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
 function penBtn(kind, bi, si, ri, ci){ return `<button class="pen" title="Edit teks" data-edit="${kind}" data-loc="${bi}-${si}-${ri}${ci!==undefined?'-'+ci:''}">${PEN}</button>`; }
@@ -412,12 +568,13 @@ function render(){
           if(statusFilter==='none' ? (r.status || gi>1) : (statusFilter && r.status!==statusFilter)) return;
           if(q.length && !q.every(t=>r._hay.includes(t))) return;
           n++;
-          const nCols = s.cols.filter(k=>colState[k]).length || 1;
+          const nCols = s.cols.filter(k=>colState[k]).length || 1; const noneAt = s.cols.map((k,ci)=>isNoneCell(r.cells[ci])); const tpl = s.cols.map((k,ci)=>colState[k]?(noneAt[ci]?'minmax(0,1fr)':'minmax(0,1fr)'):'').filter(Boolean).join(' ') || '1fr';
           const sc = r.status ? ' st-'+r.status : '';
           rowsHtml += `<div class="topic-card${sc}" id="row-${bi}-${si}-${ri}">
-            <div class="topic-title"><span class="tt-text">${highlight(r.topik,q)}</span>${penBtn('topik',bi,si,ri)}</div>
-            <div class="cols n${nCols}">${s.cols.map((k,ci)=>`<div class="col ${colState[k]?'':'hidden-col'}${k==='draft'&&r.status?' st-'+r.status:''}"><span class="col-label ${COLMETA[k].cls}">${COLMETA[k].label}</span>${penBtn('cell',bi,si,ri,ci)}<div class="col-text">${renderCell(r.cells[ci]||[],q)}</div></div>`).join('')}</div>
-            <div class="extra-block analysis-block"><span class="extra-label">Analisis</span>${penBtn('analisis',bi,si,ri)}<div class="extra-text${r.analisis?'':' empty'}">${r.analisis?highlight(r.analisis,q):'Belum dianalisis.'}</div></div>
+            <div class="topic-title"><span class="tt-text">${highlight(r.topik,q)}</span>${gi<2?statusBtn(r,bi,si,ri):''}${penBtn('topik',bi,si,ri)}</div>
+            <div class="cols n${nCols}" style="--tpl:${tpl}">${s.cols.map((k,ci)=>`<div class="col ${colState[k]?'':'hidden-col'}${noneAt[ci]?' is-none':''}${k==='draft'&&r.status?' st-'+r.status:''}"><span class="col-label ${COLMETA[k].cls}">${COLMETA[k].label}</span>${penBtn('cell',bi,si,ri,ci)}<div class="col-text">${renderCell(r.cells[ci]||[],q)}</div></div>`).join('')}</div>
+            <div class="extras"><div class="extra-block analysis-block"><span class="extra-label">Analisis</span>${penBtn('analisis',bi,si,ri)}<div class="extra-text${r.analisis?'':' empty'}">${r.analisis?highlight(r.analisis,q):'Belum dianalisis.'}</div></div>
+            ${gi<2?`<div class="extra-block note-block${sc}"><span class="extra-label">Catatan</span>${penBtn('catatan',bi,si,ri)}<div class="extra-text${r.catatan?'':' empty'}">${r.catatan?highlight(r.catatan,q):'—'}</div></div>`:''}</div>
           </div>`;
         });
         if(n){ babHtml+=`<div class="subsection" id="sub-${bi}-${si}">${s._h.title?`<div class="subsection-head"><span class="code">${esc(s._h.code)}</span><h3>${esc(s._h.title)}</h3><span class="cnt">${n} topik</span></div>`:''}${rowsHtml}</div>`; babCount+=n; }
@@ -427,29 +584,29 @@ function render(){
       gHtml += `<section class="bagian ${isOpen?'open':''}" id="bab-${bi}"><button class="bagian-head" data-bi="${bi}"><span class="left"><span class="code">${esc(b._h.code)}</span><h2>${esc(b._h.title)}</h2></span><span class="meta"><span class="flags">${filtering?'':flagsHtml(b._flags)}</span><span class="badge-count">${filtering?babCount:b._count} topik</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="9 6 15 12 9 18"/></svg></span></button><div class="bagian-body">${isOpen?babHtml:''}</div></section>`;
       gCount += babCount;
     });
-    if(gCount || !filtering) html += `<div class="group-banner"><span class="tag">${GROUPNAME[gi]}</span><h2>${esc(g.title)}</h2>${g.desc?`<p>${esc(g.desc)}</p>`:''}</div>` + gHtml;
+    if(gCount || !filtering) html += `<div class="group-banner">${GROUPNAME[gi].toLowerCase()===g.title.toLowerCase()?'':`<span class="tag">${GROUPNAME[gi]}</span>`}<h2>${esc(g.title)}</h2>${g.desc?`<p>${esc(g.desc)}</p>`:''}</div>` + gHtml;
     total += gCount;
   });
   if(filtering && !total) html=`<div class="empty-state"><div class="big">Tidak ada hasil</div>Coba kata kunci lain.</div>`;
   main.innerHTML = html;
-  const parts=[]; if(q.length) parts.push(`semua kata: ${q.map(t=>'"'+t+'"').join(' + ')}`); if(statusFilter) parts.push(`status "${statusFilter==='none'?'Tanpa warna':STATUS[statusFilter].label}"`);
+  const parts=[]; if(q.length) parts.push(`semua kata: ${q.map(t=>'"'+t+'"').join(' + ')}`); if(statusFilter) parts.push(`"${statusFilter==='none'?NONE_LABEL:STATUS[statusFilter].label}"`);
   resultsNote.textContent = filtering ? `${total} topik cocok untuk ${parts.join(' dan ')}` : '';
   main.querySelectorAll('.bagian-head').forEach(btn=>btn.addEventListener('click',()=>{ const bi=+btn.dataset.bi; if(!filtering){ if(current) commitEdit(); openState[bi]=!openState[bi]; navOpenState[bi]=openState[bi]; render(); } else btn.closest('.bagian').classList.toggle('open'); }));
-  renderSidebar();
+  renderSidebar(); spy();
 }
 
 /* ===== Ganti warna status ===== */
 function statusBtn(r,bi,si,ri){
   const loc = `${bi}-${si}-${ri}`;
-  return r.status ? `<button class="pill ${r.status} st-pick" data-loc="${loc}" title="Klik untuk mengganti warna">${STATUS[r.status].label} ▾</button>`
-                  : `<button class="st-pick ghost" data-loc="${loc}" title="Beri tanda warna">○ Tandai ▾</button>`;
+  return r.status ? `<button class="pill ${r.status} st-pick" data-loc="${loc}" title="Klik untuk mengganti prioritas">${STATUS[r.status].label} ▾</button>`
+                  : `<button class="st-pick ghost" data-loc="${loc}" title="Beri prioritas">○ Prioritas ▾</button>`;
 }
 const menu = document.createElement('div'); menu.className='st-menu'; document.body.appendChild(menu);
 let menuLoc = null;
 function openMenu(btn){
   menuLoc = btn.dataset.loc; const r = rowAt(menuLoc).r;
   menu.innerHTML = Object.entries(STATUS).map(([k,v])=>`<button data-v="${k}" class="${r.status===k?'cur':''}"><span class="sw ${k}"></span>${v.label}</button>`).join('')
-    + `<button data-v="" class="${!r.status?'cur':''}"><span class="sw none"></span>Tanpa warna</button>`;
+    + `<button data-v="" class="${!r.status?'cur':''}"><span class="sw none"></span>${NONE_LABEL}</button>`;
   const rc = btn.getBoundingClientRect();
   menu.style.top = (window.scrollY + rc.bottom + 6) + 'px';
   menu.style.left = Math.min(window.scrollX + rc.left, window.scrollX + document.documentElement.clientWidth - 230) + 'px';
@@ -570,7 +727,7 @@ function updateSaveDot(){ saveBtn.classList.toggle('has', pendingFile>0); saveBt
 let fileHandle = null;
 function cleanJSON(){ return JSON.stringify(GROUPS, (k,v)=> k.startsWith('_') ? undefined : v).replace(/<\//g,'<\\/'); }
 function buildHtml(){ const open='<script id="matrix-data" type="application/json">'; const a=PRISTINE.indexOf(open)+open.length, b=PRISTINE.indexOf('<\/script>', a); return PRISTINE.slice(0,a)+cleanJSON()+PRISTINE.slice(b); }
-function fileName(){ try{ return decodeURIComponent(location.pathname.split('/').pop()) || 'Matriks_Perbandingan_PBJ_Peraturan_Perundang-undangan.html'; }catch(e){ return 'Matriks_Perbandingan_PBJ_Peraturan_Perundang-undangan.html'; } }
+function fileName(){ try{ return decodeURIComponent(location.pathname.split('/').pop()) || 'Matriks_Perbandingan_PBJ_Peraturan_Perundang-undangan.html'; }catch(e){ return 'Matriks_Perbandingan_3_Regulasi.html'; } }
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600); }
 async function save(){
   if(current){ commitEdit(); render(); }

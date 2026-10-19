@@ -34,8 +34,8 @@
   .lead{margin:22px 0 0; font-size:16px; line-height:1.6; color:var(--ink-soft); max-width:52ch;}
 
   /* papan keberangkatan */
-  .board{margin-top:clamp(24px,5.5vh,56px); background:var(--board); border-radius:14px; padding:8px 0; box-shadow:0 18px 40px -24px rgba(22,33,62,.55);}
-  .board-head, .flight{display:grid; grid-template-columns:128px 1fr 110px 120px; align-items:center; column-gap:18px; padding:0 22px;}
+  .board{width:100%; max-width:760px; margin:clamp(24px,5.5vh,56px) auto 0; background:var(--board); border-radius:14px; padding:8px 0; box-shadow:0 18px 40px -24px rgba(22,33,62,.55);}
+  .board-head, .flight{display:grid; grid-template-columns:128px 1fr 120px; align-items:center; column-gap:18px; padding:0 22px;}
   .board-head{height:40px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#8E98B5; border-bottom:1px solid var(--board-line);}
   .flight{width:100%; min-height:clamp(62px,9.5vh,96px); background:none; border:none; border-bottom:1px solid var(--board-line); color:#fff; text-align:left; cursor:pointer; font:inherit; position:relative; transition:background .18s;}
   .flight:last-child{border-bottom:none;}
@@ -78,7 +78,7 @@
 
   @media (max-width:700px){
     .board-head{display:none;}
-    .flight{grid-template-columns:1fr auto; grid-template-areas:"code status" "dest dest" "info info"; row-gap:4px; padding:14px 18px;}
+    .flight{grid-template-columns:1fr auto; grid-template-areas:"code status" "dest dest"; row-gap:4px; padding:14px 18px;}
     .code{grid-area:code; font-size:13px;}
     .dest{grid-area:dest; font-size:18px; margin-top:2px;}
     .info{grid-area:info; font-size:12px;}
@@ -103,23 +103,20 @@
     <p class="org"><span class="bar"></span>Disusun oleh Qadhiya</p>
 
     <nav class="board" aria-label="Daftar matriks">
-      <div class="board-head" aria-hidden="true"><span>Kode</span><span>Matriks</span><span>Isi</span><span style="justify-self:end">Status</span></div>
+      <div class="board-head" aria-hidden="true"><span>Nomor</span><span>Matriks</span><span style="justify-self:end">Status</span></div>
       <button class="flight" data-href="peraturan-perundangan.html">
         <span class="code" data-flap>Matriks 01</span>
-        <span class="dest"><span data-flap>Peraturan Perundang-undangan</span><small>Perdir IAS, Perpres 46/2025, Permen BUMN 2/2023</small></span>
-        <span class="info">369 topik</span>
+        <span class="dest"><span data-flap>Peraturan Perundang-Undangan</span><small>Perdir IAS, Perpres 46/2025, Permen BUMN 2/2023</small></span>
         <span class="status">Buka</span>
       </button>
       <button class="flight" data-href="injourney-apindo.html">
         <span class="code" data-flap>Matriks 02</span>
         <span class="dest"><span data-flap>InJourney dan Apindo</span><small>InJourney, Apindo, Draft IAS</small></span>
-        <span class="info">332 topik</span>
         <span class="status">Buka</span>
       </button>
       <button class="flight" data-href="anak-usaha.html">
         <span class="code" data-flap>Matriks 03</span>
         <span class="dest"><span data-flap>Anak Usaha</span><small>AP Supports, Gapura, IAS Hospitality, IAS Property, IAS Support</small></span>
-        <span class="info">218 topik</span>
         <span class="status">Buka</span>
       </button>
     </nav>
@@ -241,16 +238,22 @@
     });
   }
   function landing(){
-    const vw = window.innerWidth;
-    const startX = plane.getBoundingClientRect().left;
+    // pendaratan rendah dan landai: datang dari kiri dengan ketinggian rendah, menyentuh landasan, lalu meluncur dan melambat
+    plane.getAnimations().forEach(a=>a.cancel());
     plane.style.transform='';
+    const r = plane.getBoundingClientRect();           // posisi rumah setelah transform dikosongkan
+    const W = r.width, L = r.left;
+    const X0 = -(L + W + 40);                            // mulai tepat di luar layar kiri
+    const T = -L * 0.8;                                  // titik sentuh
+    setRunwaySpeed(1.8);
+    setTimeout(()=> setRunwaySpeed(1), 1250);
     return plane.animate([
-      {transform:`translateX(${-startX-360}px) translateY(-210px) rotate(8deg)`, offset:0},
-      {transform:`translateX(${-startX*0.35-120}px) translateY(-60px) rotate(5deg)`, offset:.45},
-      {transform:'translateX(-40px) translateY(-6px) rotate(-2deg)', offset:.72},
-      {transform:'translateX(-12px) translateY(0) rotate(0deg)', offset:.84},
-      {transform:'translateX(0) translateY(0) rotate(0deg)', offset:1}
-    ],{duration:1700, easing:'cubic-bezier(.2,.6,.35,1)', fill:'forwards'}).finished;
+      {transform:`translate(${X0}px, -56px) rotate(1.5deg)`, offset:0},
+      {transform:`translate(${X0 + (T - X0)*0.75}px, -12px) rotate(0.8deg)`, offset:.45},
+      {transform:`translate(${T}px, 0px) rotate(-0.6deg)`, offset:.6},
+      {transform:`translate(${T*0.3}px, 0px) rotate(0deg)`, offset:.8},
+      {transform:'translate(0, 0) rotate(0deg)', offset:1}
+    ],{duration:2000, easing:'linear', fill:'forwards'}).finished;
   }
 
   const fly = document.getElementById('fly'), sheet = document.getElementById('sheet'), big = document.getElementById('bigplane');
