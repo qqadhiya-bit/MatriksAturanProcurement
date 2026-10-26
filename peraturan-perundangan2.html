@@ -226,7 +226,7 @@
   <div class="tb-row">
     <div class="search-wrap">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input id="search" type="text" placeholder="Cari kata, pasal, atau angka" autocomplete="off" aria-label="Cari">
+      <input id="search" type="text" autocomplete="off" aria-label="Cari">
       <span class="kbd" id="kbdHint">/</span><button class="clear-btn" id="clearBtn" aria-label="Bersihkan pencarian">✕</button>
     </div>
     <div class="chips" id="colToggles"></div>
@@ -336,7 +336,7 @@ function counts(){
   return c;
 }
 document.getElementById('regs').innerHTML =
-  `<span><span class="dot ias"></span>Draft Kebijakan PBJ IAS <span class="acuan">acuan</span></span><span><span class="dot permen"></span>Permen BUMN 03/2023</span><span><span class="dot perpres"></span>Perpres 46/2025</span>`;
+  `<span><span class="dot ias"></span>Draft Kebijakan PBJ IAS</span><span><span class="dot permen"></span>Permen BUMN 03/2023</span><span><span class="dot perpres"></span>Perpres 46/2025</span>`;
 
 function drawStats(c){
   document.getElementById('stats').innerHTML =
