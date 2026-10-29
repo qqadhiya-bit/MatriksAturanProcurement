@@ -490,7 +490,7 @@ function render(){
           blk.rows.forEach(r=>{
             r._cols = blk.cols;
             const f=effFlags(r);
-            if(active.size && onlyRelated && ![...active].some(a=>f.has(a))) return;
+            if(active.size && onlyRelated && ![...active].some(a=>f.has(a) && !(a==='ket' && r.dup))) return;
             if(terms.length && !terms.every(t=>r._hay.includes(t))) return;
             n++; rowsHtml += card(r, terms);
           });
