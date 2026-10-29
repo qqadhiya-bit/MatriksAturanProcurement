@@ -104,7 +104,7 @@
   html.nored .wr:not(.wd){color:inherit !important; background:none !important;}
   html.nored .wr.wd{color:#1a1a1a !important;}
   html.nored .wr:not(.wb){font-weight:inherit !important;}
-  #redToggle{margin-left:auto; margin-right:6px;} #redToggle + #saveFile{margin-left:0;}
+  #redToggle{margin-left:0; margin-right:6px;} #redToggle + #saveFile{margin-left:0;} .save-mini.act{opacity:1; color:#c00000; border-color:#c00000;} html.brush .col-text{cursor:crosshair;}
   #redToggle .eo{display:none;} html.nored #redToggle .ei{display:none;} html.nored #redToggle .eo{display:block;}
   .chip-label{font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft); font-weight:600; margin-right:2px;}
   .fchip{display:inline-flex; align-items:center; gap:7px; border:1.5px solid var(--line); background:var(--card); border-radius:999px; padding:6px 12px; font-size:12.5px; font-weight:600; cursor:pointer; color:var(--ink-soft); user-select:none;}
@@ -290,6 +290,8 @@
       <span class="kbd" id="kbdHint">/</span><button class="clear-btn" id="clearBtn" aria-label="Bersihkan pencarian">✕</button>
     </div>
     <div class="chips" id="colToggles"></div>
+    <button class="save-mini" id="brushOn" aria-label="Kuas merah" title="Kuas merah: blok teks untuk menandai merah (klik lagi untuk selesai)" style="margin-left:auto;margin-right:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></button>
+    <button class="save-mini" id="brushOff" aria-label="Penghapus merah" title="Penghapus: blok teks untuk menghapus tanda merahnya (klik lagi untuk selesai)" style="margin-left:0;margin-right:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H9l-5.3-5.3a1 1 0 0 1 0-1.4l9.6-9.6a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4L11 20"/><path d="M8 11l5 5"/></svg></button>
     <button class="save-mini" id="redToggle" aria-label="Tanda merah" title="Tampilkan / sembunyikan tanda merah"><svg class="ei" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eo" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button>
     <button class="save-mini" id="saveFile" aria-label="Simpan ke file" title="Simpan ke file HTML (Ctrl+S)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button>
   </div>
@@ -590,21 +592,48 @@ function restoreExtras(nu, old){
   nu.forEach(i=>{ if(!i.text) return; const k=pool.findIndex(o=>norm(o.text)===norm(i.text)); if(k<0) return; const o=pool.splice(k,1)[0]; ['gap','eq','cont'].forEach(f=>{ if(o[f]) i[f]=o[f]; }); });
   return nu;
 }
+function collectOv(el, mode, sel){
+  const ov=new Map();
+  if(mode==='clear'){ const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let t; while((t=tw.nextNode())) ov.set(t,0); return ov; }
+  if(!sel.rangeCount) return null;
+  const rg=sel.getRangeAt(0); if(rg.collapsed || !el.contains(rg.commonAncestorContainer)) return null;
+  const sc=rg.startContainer, so=rg.startOffset, ec=rg.endContainer, eo=rg.endOffset;
+  if(ec.nodeType===3 && eo<ec.length) ec.splitText(eo);
+  if(sc.nodeType===3 && so>0){ const nn=sc.splitText(so); if(sc===ec) rg.setEnd(nn, eo-so); rg.setStart(nn,0); }
+  const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let t;
+  while((t=tw.nextNode())){ if(t.length && rg.intersectsNode(t)) ov.set(t, mode==='on'?1:0); }
+  return ov;
+}
 function applyRed(mode){
-  if(!current || current.kind!=='cell') return; const el=current.el, sel=window.getSelection(); const ov=new Map();
-  if(mode==='clear'){ const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let t; while((t=tw.nextNode())) ov.set(t,0); }
-  else {
-    if(!sel.rangeCount) { toast('Blok dulu kata yang mau diubah.'); return; }
-    const rg=sel.getRangeAt(0); if(rg.collapsed || !el.contains(rg.commonAncestorContainer)){ toast('Blok dulu kata yang mau diubah.'); return; }
-    const sc=rg.startContainer, so=rg.startOffset, ec=rg.endContainer, eo=rg.endOffset;
-    if(ec.nodeType===3 && eo<ec.length) ec.splitText(eo);
-    if(sc.nodeType===3 && so>0){ const nn=sc.splitText(so); if(sc===ec) rg.setEnd(nn, eo-so); rg.setStart(nn,0); }
-    const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let t;
-    while((t=tw.nextNode())){ if(t.length && rg.intersectsNode(t)) ov.set(t, mode==='on'?1:0); }
-  }
+  if(!current || current.kind!=='cell') return; const el=current.el, sel=window.getSelection();
+  const ov=collectOv(el,mode,sel); if(!ov){ toast('Blok dulu kata yang mau diubah.'); return; }
   const items=restoreExtras(parseCell(el,ov), current.r.cells[current.ci]);
   el.innerHTML=renderCell(items,[],null); sel.removeAllRanges(); el.focus();
 }
+/* kuas merah: blok teks langsung ditandai / dihapus tandanya, tanpa masuk mode edit */
+let brush=null;
+function setBrush(m){
+  brush = (brush===m) ? null : m;
+  document.documentElement.classList.toggle('brush', !!brush);
+  document.getElementById('brushOn').classList.toggle('act', brush==='on');
+  document.getElementById('brushOff').classList.toggle('act', brush==='off');
+}
+function paintSelection(){
+  if(!brush || current) return; const sel=window.getSelection(); if(!sel.rangeCount || sel.isCollapsed) return;
+  const rg=sel.getRangeAt(0); let n=rg.commonAncestorContainer; if(n.nodeType===3) n=n.parentNode;
+  const el=n.closest && n.closest('.col-text'); if(!el) return;
+  const pen=el.closest('.col').querySelector('.pen'); if(!pen) return;
+  const {r,ci,id}=rowAt(pen.dataset.loc);
+  const ov=collectOv(el,brush,sel); if(!ov) return;
+  const items=restoreExtras(parseCell(el,ov), r.cells[ci]);
+  sel.removeAllRanges();
+  const strip=a=>JSON.stringify(a.map(canonItem));
+  if(strip(items)!==strip(normItems(r.cells[ci]||[]))){ r.cells[ci]=items; r._hay=norm(r.topik+' '+r.cells.map(itemsText).join(' ')); recordPatch('c:'+id+'-'+ci, items); }
+  el.innerHTML=renderCell(items,[],null);
+}
+main.addEventListener('mouseup', ()=>setTimeout(paintSelection,0));
+main.addEventListener('touchend', ()=>setTimeout(paintSelection,60));
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && brush && !current) setBrush(brush); });
 function normItems(items){ return items.map(i=> i.tbl ? {tbl:i.tbl.map(r=>r.map(c=>c.replace(/\s+/g,' ').trim()))} : Object.assign({}, i, {text:i.text.split('\t').map(x=>x.replace(/\s+/g,' ').trim()).join('\t')})).filter(i=> i.tbl || i.text.replace(/\t/g,'').trim()); }
 function commitEdit(){
   if(!current) return;
@@ -665,6 +694,8 @@ async function save(){
   done('File terunduh. Ganti file lama dengan file ini.');
 }
 saveBtn.addEventListener('click', save);
+document.getElementById('brushOn').addEventListener('click',()=>setBrush('on'));
+document.getElementById('brushOff').addEventListener('click',()=>setBrush('off'));
 (function(){ const b=document.getElementById('redToggle'), k='matriks-ppu2-nored';
   const set=v=>{ document.documentElement.classList.toggle('nored',v); b.setAttribute('aria-pressed', v?'false':'true'); store.set(k, v?'1':'0'); };
   set(store.get(k)==='1'); b.addEventListener('click',()=>set(!document.documentElement.classList.contains('nored')));
