@@ -101,6 +101,11 @@
   .wr{color:#c00000; background:#ffd9d9; font-weight:700; border-radius:2px; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .wr{color:#ff9a9a; background:#4d1f1f;} }
   :root[data-theme="dark"] .wr{color:#ff9a9a; background:#4d1f1f;}
+  html.nored .wr:not(.wd){color:inherit !important; background:none !important;}
+  html.nored .wr.wd{color:#1a1a1a !important;}
+  html.nored .wr:not(.wb){font-weight:inherit !important;}
+  #redToggle{margin-left:auto; margin-right:6px;} #redToggle + #saveFile{margin-left:0;}
+  #redToggle .eo{display:none;} html.nored #redToggle .ei{display:none;} html.nored #redToggle .eo{display:block;}
   .chip-label{font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-soft); font-weight:600; margin-right:2px;}
   .fchip{display:inline-flex; align-items:center; gap:7px; border:1.5px solid var(--line); background:var(--card); border-radius:999px; padding:6px 12px; font-size:12.5px; font-weight:600; cursor:pointer; color:var(--ink-soft); user-select:none;}
   .fchip .cnt{font-family:'IBM Plex Mono',monospace; font-size:11px; opacity:.8; font-variant-numeric:tabular-nums;}
@@ -285,6 +290,7 @@
       <span class="kbd" id="kbdHint">/</span><button class="clear-btn" id="clearBtn" aria-label="Bersihkan pencarian">✕</button>
     </div>
     <div class="chips" id="colToggles"></div>
+    <button class="save-mini" id="redToggle" aria-label="Tanda merah" title="Tampilkan / sembunyikan tanda merah"><svg class="ei" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eo" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button>
     <button class="save-mini" id="saveFile" aria-label="Simpan ke file" title="Simpan ke file HTML (Ctrl+S)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button>
   </div>
   <div class="tb-row">
@@ -659,6 +665,10 @@ async function save(){
   done('File terunduh. Ganti file lama dengan file ini.');
 }
 saveBtn.addEventListener('click', save);
+(function(){ const b=document.getElementById('redToggle'), k='matriks-ppu2-nored';
+  const set=v=>{ document.documentElement.classList.toggle('nored',v); b.setAttribute('aria-pressed', v?'false':'true'); store.set(k, v?'1':'0'); };
+  set(store.get(k)==='1'); b.addEventListener('click',()=>set(!document.documentElement.classList.contains('nored')));
+})();
 document.addEventListener('keydown', e=>{ if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){ e.preventDefault(); save(); } });
 
 /* ---- pencarian ---- */
