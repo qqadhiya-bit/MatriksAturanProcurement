@@ -610,7 +610,6 @@
 <div class="hero"><div class="hero-inner">
   <div class="title-row"><button class="home-btn" id="homeBtn" title="Kembali ke beranda" aria-label="Kembali ke beranda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M11 18l-6-6 6-6"></path></svg></button><h1>Matriks Perbandingan Anak Usaha</h1></div>
   <div class="regs" id="regs"></div>
-  <div class="stats" id="stats"></div>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
   <button class="min-btn" id="minView" type="button" aria-label="Ringkas atau tampilkan panel" title="Ringkas panel (klik lagi untuk menampilkan)"><svg class="mi-up" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg><svg class="mi-dn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="search-wrap">
@@ -740,7 +739,7 @@ let query = '';
 let scrollX = 0;
 
 document.getElementById('regs').innerHTML = COLS.map((c,i)=>`<span><span class="dot c${i}"></span>${esc(c)}</span>`).join('');
-document.getElementById('stats').innerHTML = `
+if(document.getElementById('stats')) document.getElementById('stats').innerHTML = `
   <div class="stat"><div class="n">${GROUPS.length}</div><div class="l">Kelompok</div></div>
   <div class="stat"><div class="n">${BABS.length}</div><div class="l">Bab</div></div>
   <div class="stat"><div class="n">${BABS.reduce((a,b)=>a+b.subsections.length,0)}</div><div class="l">Sub-bab</div></div>
