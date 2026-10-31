@@ -481,7 +481,7 @@
   html.fit .h-scroll{overflow:visible;}
   html.fit .cols6{display:flex; flex-wrap:wrap; gap:1px; background:var(--line-soft); --k:var(--n);}
   html.fit .cols6 .col{border-right:none; min-width:0; flex:1 1 calc(100% / var(--k) - 1px);}
-  @media (max-width:1180px){ html.fit .cols6{--k:min(var(--n),3);} }
+  @media (max-width:900px){ html.fit .cols6{--k:min(var(--n),3);} }
   html.fit .cols6 .col.is-td{display:none;}
   html.fit .cols6 .col.is-td.show{display:block;}
   html.fit .cols6 .col.hidden-col{display:none !important;}
@@ -502,6 +502,7 @@
   #redToggle .eo{display:none;} html.nored #redToggle .ei{display:none;} html.nored #redToggle .eo{display:block;}
   /* Draft IAS memanjang di atas pada tampilan Semua kolom */
   html.fit .cols6 .col.wide{flex-basis:100%;}
+  html.fit .cols6.many .col-text p.li .tx, html.fit .cols6.many .col-text p.plain-line{text-align:left;}
 
   /* ===== Ringkas panel ===== */
   .min-btn{flex:none; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); display:inline-flex; align-items:center; justify-content:center; cursor:pointer;}
@@ -770,8 +771,8 @@ const resultsNote = document.getElementById('resultsNote');
 let curG=0;
 function drawColbar(){ const vis = COLS.map((c,i)=>i).filter(i=>colState[i] && (sortMode>=0 || !(curG===2 && i<2))); colbarInner.innerHTML = vis.map(i=>`<div class="c${i}"><span class="dot c${i}"></span>${esc(COLS[i])}</div>`).join(''); }
 const colOn = (b,ci) => colState[ci] && (sortMode>=0 || !(b.g===2 && ci<2));
-function wideDraft(r,b){ const n=r.cells.filter((c,ci)=>colOn(b,ci) && !isTD(c)).length; return n>=4 && colOn(b,0) && !isTD(r.cells[0]); }
-function fitN(r,b){ let n=r.cells.filter((c,ci)=>colOn(b,ci) && !isTD(c)).length; if(wideDraft(r,b)) n--; return Math.max(1, n<=3 ? n : Math.ceil(n/2)); }
+function wideDraft(r,b){ const n=r.cells.filter((c,ci)=>colOn(b,ci) && !isTD(c)).length; return n>=7 && colOn(b,0) && !isTD(r.cells[0]); }
+function fitN(r,b){ let n=r.cells.filter((c,ci)=>colOn(b,ci) && !isTD(c)).length; if(wideDraft(r,b)) n--; return Math.max(1, n); }
 function noneLine(r,b,bi,si,ri){
   const td = r.cells.map((c,ci)=>ci).filter(ci=>colOn(b,ci) && isTD(r.cells[ci]));
   if(!td.length) return '';
@@ -782,7 +783,7 @@ function cardHtml(b,s,r,bi,si,ri,q,dupN){
         const L = `${bi}-${si}-${ri}`, sk = stOf(r), sc = r.status ? ' st-'+r.status : '';
         const same = norm(r.topik).replace(/[^a-z0-9]/g,'') === norm(s._h.title).replace(/[^a-z0-9]/g,'');
         return `<div class="topic-card${sc}" id="row-${bi}-${si}-${ri}${dupN?'-d'+dupN:''}"><div class="topic-title"><span class="tt-text">${highlight(r.topik,q)}</span>${r.status?`<button class="pill ${sk} st-pick" data-loc="${L}" title="Klik untuk mengganti status">${STATUS[sk].label} ▾</button>`:`<button class="st-pick ghost" data-loc="${L}" title="Beri tanda status">○ Tandai ▾</button>`}${penBtn('topik',`${bi}-${si}-${ri}`)}</div>
-          <div class="h-scroll"><div class="cols6" style="--n:${fitN(r,b)}">${r.cells.map((c,ci)=>`<div class="col c${ci}${ci===sortMode?' sort-col':''}${isTD(c)?' is-td':''}${ci===0&&wideDraft(r,b)?' wide':''} ${colOn(b,ci)?'':'hidden-col'}"><span class="col-label c${ci}">${esc(COLS[ci])}</span>${penBtn('cell',`${bi}-${si}-${ri}-${ci}`)}<div class="col-text">${renderCell(c,q)}</div></div>`).join('')}</div></div>${noneLine(r,b,bi,si,ri)}<div class="extras two"><div class="extra-block analysis-block"><div class="extra-head"><span class="extra-label">Analisis</span></div>${penBtn('analisis',L)}<div class="extra-text${r.analisis?'':' empty'}">${r.analisis?highlight(r.analisis,q):'Belum ada analisis.'}</div></div>
+          <div class="h-scroll"><div class="cols6${fitN(r,b)>=5?' many':''}" style="--n:${fitN(r,b)}">${r.cells.map((c,ci)=>`<div class="col c${ci}${ci===sortMode?' sort-col':''}${isTD(c)?' is-td':''}${ci===0&&wideDraft(r,b)?' wide':''} ${colOn(b,ci)?'':'hidden-col'}"><span class="col-label c${ci}">${esc(COLS[ci])}</span>${penBtn('cell',`${bi}-${si}-${ri}-${ci}`)}<div class="col-text">${renderCell(c,q)}</div></div>`).join('')}</div></div>${noneLine(r,b,bi,si,ri)}<div class="extras two"><div class="extra-block analysis-block"><div class="extra-head"><span class="extra-label">Analisis</span></div>${penBtn('analisis',L)}<div class="extra-text${r.analisis?'':' empty'}">${r.analisis?highlight(r.analisis,q):'Belum ada analisis.'}</div></div>
           <div class="extra-block note-block${sc}"><div class="extra-head"><span class="extra-label">Catatan</span></div>${penBtn('catatan',L)}<div class="extra-text${r.catatan?'':' empty'}">${r.catatan?highlight(r.catatan,q):'Belum ada catatan.'}</div></div></div></div>`;
 }
 function render(){
