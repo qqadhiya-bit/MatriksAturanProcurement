@@ -505,7 +505,7 @@
   html.fit .cols6.many .col-text p.li .tx, html.fit .cols6.many .col-text p.plain-line{text-align:left;}
 
   /* ===== Ringkas panel ===== */
-  .min-btn{flex:none; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); display:inline-flex; align-items:center; justify-content:center; cursor:pointer;}
+  .min-btn{flex:none; height:34px; padding:0 12px 0 9px; gap:5px; font:600 12px/1 inherit; font-family:inherit; border-radius:999px; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); display:inline-flex; align-items:center; justify-content:center; cursor:pointer;}
   .min-btn:hover{border-color:var(--ink-soft); color:var(--ink);}
   .min-btn .mi-dn{display:none;} html.min .min-btn .mi-up{display:none;} html.min .min-btn .mi-dn{display:block;}
   .tools,.tools-list{display:contents;} .tools-bubble{display:none;}
@@ -527,10 +527,9 @@
   <div class="title-row"><button class="home-btn" id="homeBtn" title="Kembali ke beranda" aria-label="Kembali ke beranda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M11 18l-6-6 6-6"></path></svg></button><h1>Matriks Perbandingan Anak Usaha</h1></div>
   <div class="regs" id="regs"></div>
   <div class="stats" id="stats"></div>
-  <details class="status-legend" open><summary>Keterangan</summary><div class="status-legend-content" id="statusLegend"></div></details>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
-  <button class="min-btn" id="minView" type="button" aria-label="Ringkas atau tampilkan panel" title="Ringkas panel (klik lagi untuk menampilkan)"><svg class="mi-up" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg><svg class="mi-dn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="search-wrap">
+  <button class="min-btn" id="minView" type="button" aria-label="Ringkas atau tampilkan panel" title="Ringkas panel (klik lagi untuk menampilkan)"><svg class="mi-up" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg><svg class="mi-dn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span class="mi-txt">Ringkas</span></button><div class="search-wrap">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
     <input id="search" type="text" placeholder="" autocomplete="off">
     <span class="kbd" id="kbdHint">/</span><button class="clear-btn" id="clearBtn" aria-label="Bersihkan pencarian">✕</button>
@@ -1167,7 +1166,7 @@ render();
     root.classList.toggle('min', on);
     if(on) document.body.appendChild(tools); else home.insertBefore(tools, after);
     if(!on) tools.classList.remove('open');
-    mv.title = on ? 'Tampilkan panel lengkap' : 'Ringkas panel (klik lagi untuk menampilkan)';
+    mv.title = on ? 'Tampilkan panel lengkap' : 'Ringkas panel (klik lagi untuk menampilkan)'; mv.querySelector('.mi-txt').textContent = on ? 'Tampilkan' : 'Ringkas';
     if(save){ try{ localStorage.setItem('matriks7-min', on?'1':'0'); }catch(e){} }
     requestAnimationFrame(()=>{ if(typeof setTbh==='function') setTbh(); try{ syncAll(Math.min(scrollX,maxX())); }catch(e){} });
   }
