@@ -606,6 +606,40 @@
   .cp-act button:hover{color:var(--ink); border-color:var(--ink-soft);}
   .filter-row{flex-wrap:wrap; row-gap:8px;}
   @media (max-width:760px){ .col-pop-body{left:auto; right:-60px;} .col-pop-body .toggles{grid-template-columns:1fr;} .sort-sel{order:5;} }
+
+  /* ===== Mode fokus ===== */
+  .fx-btn{flex:none; width:26px; height:26px; border-radius:7px; border:1px solid var(--line); background:#fff; color:var(--ink-soft); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; margin-right:2px;}
+  .fx-btn:hover{color:#fff; background:var(--navybadge,#233761); border-color:var(--navybadge,#233761);}
+  .topic-title .tt-text{cursor:zoom-in;}
+  .topic-title .tt-text[contenteditable="true"]{cursor:text;}
+  .topic-title{justify-content:flex-start !important;}
+  .topic-title .tt-text{flex:1; min-width:0;}
+  .topic-card.flash{animation:flash 1.3s ease;}
+  @keyframes flash{0%,40%{box-shadow:0 0 0 3px #E8C547, 0 6px 18px -12px rgba(22,33,62,.25);} 100%{box-shadow:0 1px 2px rgba(22,33,62,.05), 0 6px 18px -12px rgba(22,33,62,.25);}}
+  .focus-ov{position:fixed; inset:0; z-index:90; background:rgba(16,24,44,.55); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; padding:2.5vh 2.5vw; animation:foIn .18s ease;}
+  @keyframes foIn{from{opacity:0;} to{opacity:1;}}
+  .fo-panel{width:min(1500px,100%); height:100%; background:var(--paper); border-radius:16px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,.5);}
+  .fo-head{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 18px; background:#fff; border-bottom:1px solid var(--line);}
+  .fo-crumb{font-size:12.5px; color:var(--ink-soft); line-height:1.4; min-width:0;} .fo-crumb .sep{color:#B9BCC4; margin:0 3px;}
+  .fo-right{display:flex; align-items:center; gap:12px; flex:none;}
+  .fo-pos{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); background:var(--paper); border-radius:999px; padding:4px 10px;}
+  .fo-x{width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line); background:#fff; font-size:15px; cursor:pointer; color:var(--ink);}
+  .fo-x:hover{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .fo-body{flex:1; overflow:auto; padding:18px 20px;}
+  .fo-body .topic-card{margin:0 !important;}
+  .fo-body .topic-title{font-size:17px !important; padding:14px 18px !important;}
+  .fo-body .fx-btn{display:none;} .fo-body .tt-text{cursor:default;}
+  .fo-body .col-text{font-size:13.5px;}
+  .fo-foot{display:flex; align-items:stretch; justify-content:space-between; gap:12px; padding:10px 14px; background:#fff; border-top:1px solid var(--line);}
+  .fo-nav{display:flex; align-items:center; gap:10px; max-width:42%; border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:8px 14px; cursor:pointer; text-align:left; font-family:inherit; color:var(--ink);}
+  .fo-nav.nx{text-align:right; margin-left:auto;}
+  .fo-nav .ar{font-size:22px; line-height:1; color:var(--navybadge,#233761);}
+  .fo-nav .tx{display:flex; flex-direction:column; min-width:0; font-size:13px; font-weight:600; overflow:hidden;}
+  .fo-nav .tx small{font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); font-weight:600;}
+  .fo-nav:hover:not([disabled]){border-color:var(--navybadge,#233761); background:#F3F5FA;}
+  .fo-nav[disabled]{opacity:.4; cursor:default;}
+  .fo-hint{align-self:center; font-size:11.5px; color:var(--ink-soft); text-align:center;}
+  @media (max-width:760px){ .focus-ov{padding:0;} .fo-panel{border-radius:0;} .fo-hint{display:none;} .fo-nav{max-width:49%;} .fo-body{padding:10px;} .fo-crumb{font-size:11px;} }
 </style></head><body>
 <div class="hero"><div class="hero-inner">
   <div class="title-row"><button class="home-btn" id="homeBtn" title="Kembali ke beranda" aria-label="Kembali ke beranda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M11 18l-6-6 6-6"></path></svg></button><h1>Matriks Perbandingan Anak Usaha</h1></div>
@@ -865,7 +899,7 @@ function noneLine(r,b,bi,si,ri){
 function cardHtml(b,s,r,bi,si,ri,q,dupN){
         const L = `${bi}-${si}-${ri}`, sk = stOf(r), sc = r.status ? ' st-'+r.status : '';
         const same = norm(r.topik).replace(/[^a-z0-9]/g,'') === norm(s._h.title).replace(/[^a-z0-9]/g,'');
-        return `<div class="topic-card${sc}" id="row-${bi}-${si}-${ri}${dupN?'-d'+dupN:''}"><div class="topic-title"><span class="tt-text">${highlight(r.topik,q)}</span>${r.status?`<button class="pill ${sk} st-pick" data-loc="${L}" title="Klik untuk mengganti status">${STATUS[sk].label} ▾</button>`:`<button class="st-pick ghost" data-loc="${L}" title="Beri tanda status">○ Tandai ▾</button>`}${penBtn('topik',`${bi}-${si}-${ri}`)}</div>
+        return `<div class="topic-card${sc}" id="row-${bi}-${si}-${ri}${dupN?'-d'+dupN:''}"><div class="topic-title"><button class="fx-btn" data-loc="${L}" title="Fokus ke topik ini" aria-label="Fokus ke topik ini"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><span class="tt-text">${highlight(r.topik,q)}</span>${r.status?`<button class="pill ${sk} st-pick" data-loc="${L}" title="Klik untuk mengganti status">${STATUS[sk].label} ▾</button>`:`<button class="st-pick ghost" data-loc="${L}" title="Beri tanda status">○ Tandai ▾</button>`}${penBtn('topik',`${bi}-${si}-${ri}`)}</div>
           <div class="h-scroll"><div class="cols6${fitN(r,b)>=5?' many':''}" style="--n:${fitN(r,b)}">${r.cells.map((c,ci)=>`<div class="col c${ci}${ci===sortMode?' sort-col':''}${isTD(c)?' is-td':''}${ci===0&&wideDraft(r,b)?' wide':''} ${colOn(b,ci)?'':'hidden-col'}"><span class="col-label c${ci}">${esc(COLS[ci])}</span>${penBtn('cell',`${bi}-${si}-${ri}-${ci}`)}<div class="col-text">${renderCell(c,q)}</div></div>`).join('')}</div></div>${noneLine(r,b,bi,si,ri)}<div class="extras two"><div class="extra-block analysis-block"><div class="extra-head"><span class="extra-label">Analisis</span></div>${penBtn('analisis',L)}<div class="extra-text${r.analisis?'':' empty'}">${r.analisis?highlight(r.analisis,q):'Belum ada analisis.'}</div></div>
           <div class="extra-block note-block${sc}"><div class="extra-head"><span class="extra-label">Catatan</span></div>${penBtn('catatan',L)}<div class="extra-text${r.catatan?'':' empty'}">${r.catatan?highlight(r.catatan,q):'Belum ada catatan.'}</div></div></div></div>`;
 }
@@ -877,6 +911,7 @@ function render(){
   drawColbar();
   if(sortMode>=0){ renderSorted(q,filtering); return; }
   let total=0, html='', lastG=-1;
+  ORDER=[];
   BABS.forEach((b,bi)=>{
     let babHtml='', babCount=0;
     b.subsections.forEach((s,si)=>{
@@ -885,7 +920,7 @@ function render(){
         if(statusFilter && stOf(r)!==statusFilter) return;
         if(grpFilter && grpOf(s,r)!==grpFilter) return;
         if(q.length && !q.every(t=> r._hay.includes(t))) return;
-        n++;
+        n++; ORDER.push(`${bi}-${si}-${ri}`);
         rowsHtml += cardHtml(b,s,r,bi,si,ri,q);
       });
       if(n){ babHtml += `<div class="subsection" id="sub-${bi}-${si}">${s._h.title?`<div class="subsection-head"><span class="code">${esc(s._h.code)}</span><h3>${esc(s._h.title)}</h3>${s.rows.length>1?`<span class="cnt">${n} topik</span>`:''}</div>`:''}${rowsHtml}</div>`; babCount+=n; }
@@ -900,7 +935,7 @@ function render(){
     total += babCount;
   });
   if(filtering && !total) html = `<div class="empty-state"><div class="big">Tidak ada hasil</div>Coba kata kunci atau filter lain.</div>`;
-  main.innerHTML = html;
+  main.innerHTML = html; if(FOCUS) drawFocus();
   requestAnimationFrame(()=>{ if(typeof setTbh==='function') setTbh(); });
   const parts=[]; if(q.length) parts.push(`semua kata: ${q.map(t=>'"'+t+'"').join(' + ')}`); if(statusFilter) parts.push(`status "${STATUS[statusFilter].label}"`); if(grpFilter) parts.push(`hanya diatur di ${grpFilter} aturan anak usaha`);
   resultsNote.textContent = filtering ? `${total} topik cocok untuk ${parts.join(' dan ')}` : '';
@@ -1227,7 +1262,8 @@ function renderSorted(q,filtering){
     fl();
   }
   if(!hit.length && !none.length) html=`<div class="empty-state"><div class="big">Tidak ada hasil</div>Coba kata kunci atau filter lain.</div>`;
-  main.innerHTML=html;
+  { const seen=new Set(); ORDER=[]; hit.concat(none).forEach(x=>{ const L=`${x.bi}-${x.si}-${x.ri}`; if(!seen.has(L)){ seen.add(L); ORDER.push(L); } }); }
+  main.innerHTML=html; if(FOCUS) drawFocus();
   const total = new Set(hit.map(x=>x.ord).concat(none.map(x=>x.ord))).size;
   const parts=[]; if(q.length) parts.push(`semua kata: ${q.map(t=>'"'+t+'"').join(' + ')}`); if(statusFilter) parts.push(`status "${STATUS[statusFilter].label}"`);
   resultsNote.textContent = filtering ? `${total} topik cocok untuk ${parts.join(' dan ')}` : '';
@@ -1240,6 +1276,54 @@ function renderSorted(q,filtering){
     if(sortMode>=0) requestAnimationFrame(()=>requestAnimationFrame(()=>{ const vis=COLS.map((c,i)=>i).filter(i=>colState[i]); const k=vis.indexOf(sortMode); if(k<0) return; const sc=scrollers()[0]; const view=sc?sc.clientWidth:COLW; const left=k*COLW, right=left+COLW; let x=scrollX; if(left<x) x=left; else if(right>x+view) x=right-view; x=Math.max(0,Math.min(maxX(),x)); colbarScroll.scrollLeft=x; syncAll(x); }));
   });
 })();
+
+/* ===== Mode fokus: satu topik penuh, dengan Sebelumnya / Berikutnya ===== */
+var ORDER = ORDER || [], FOCUS = null; let focusFit=false;
+function locParts(L){ const [bi,si,ri]=L.split('-').map(Number); const b=BABS[bi], s=b.subsections[si]; return {b,s,r:s.rows[ri],bi,si,ri}; }
+function openFocus(L){
+  FOCUS=L; const root=document.documentElement;
+  if(!root.classList.contains('fit')){ root.classList.add('fit'); focusFit=true; }
+  document.body.style.overflow='hidden'; drawFocus();
+}
+function closeFocus(){
+  const L=FOCUS; FOCUS=null; const ov=document.getElementById('focusOv'); if(ov) ov.remove();
+  document.body.style.overflow='';
+  if(focusFit){ document.documentElement.classList.remove('fit'); focusFit=false; }
+  if(!L) return; const {bi}=locParts(L);
+  if(sortMode<0 && !openState[bi]){ openState[bi]=true; navOpenState[bi]=true; render(); }
+  setTimeout(()=>{ const el=document.getElementById('row-'+L); if(el){ el.scrollIntoView({block:'start'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1400); } try{ syncAll(Math.min(scrollX,maxX())); }catch(e){} },40);
+}
+function stepFocus(d){ const i=ORDER.indexOf(FOCUS); if(i<0) return; const j=i+d; if(j<0||j>=ORDER.length) return; FOCUS=ORDER[j]; drawFocus(true); }
+function drawFocus(scrollTop){
+  let ov=document.getElementById('focusOv'); const keep = ov && !scrollTop ? ov.querySelector('.fo-body').scrollTop : 0;
+  if(ov) ov.remove();
+  const {b,s,r,bi,si,ri}=locParts(FOCUS), q=parseQuery(query), i=ORDER.indexOf(FOCUS);
+  const nm = L => L ? esc(locParts(L).r.topik) : '';
+  const prev = i>0 ? ORDER[i-1] : null, next = (i>=0 && i<ORDER.length-1) ? ORDER[i+1] : null;
+  const crumb = [GSHORT[b.g], (b._h.code?b._h.code+' ':'')+b._h.title, s._h.title?((s._h.code?s._h.code+' ':'')+s._h.title):''].filter(Boolean).map(esc).join(' <span class="sep">›</span> ');
+  ov=document.createElement('div'); ov.className='focus-ov'; ov.id='focusOv';
+  ov.innerHTML = `<div class="fo-panel" role="dialog" aria-modal="true" aria-label="Fokus topik">
+    <div class="fo-head"><div class="fo-crumb">${crumb}</div><div class="fo-right"><span class="fo-pos">${i>=0?`Topik ${i+1} dari ${ORDER.length}`:''}</span><button class="fo-x" data-act="close" title="Keluar dari mode fokus (Esc)" aria-label="Tutup">✕</button></div></div>
+    <div class="fo-body">${cardHtml(b,s,r,bi,si,ri,q,'f')}</div>
+    <div class="fo-foot"><button class="fo-nav" data-act="prev" ${prev?'':'disabled'}><span class="ar">‹</span><span class="tx"><small>Sebelumnya</small>${nm(prev)||'Tidak ada'}</span></button>
+      <span class="fo-hint">← → untuk pindah · Esc untuk keluar</span>
+      <button class="fo-nav nx" data-act="next" ${next?'':'disabled'}><span class="tx"><small>Berikutnya</small>${nm(next)||'Tidak ada'}</span><span class="ar">›</span></button></div></div>`;
+  mainEl.appendChild(ov);
+  ov.querySelector('.fo-body').scrollTop = keep;
+}
+mainEl.addEventListener('click', e=>{
+  const ov=e.target.closest('#focusOv');
+  if(ov){ const a=e.target.closest('[data-act]'); if(a){ e.stopPropagation(); if(a.dataset.act==='close') closeFocus(); else stepFocus(a.dataset.act==='next'?1:-1); return; } if(e.target===ov) closeFocus(); return; }
+  if(brush || current) return;
+  const f=e.target.closest('.fx-btn'); if(f){ e.stopPropagation(); openFocus(f.dataset.loc); return; }
+  const t=e.target.closest('.tt-text'); if(t && !t.isContentEditable){ const fb=t.parentElement.querySelector('.fx-btn'); if(fb) openFocus(fb.dataset.loc); }
+});
+document.addEventListener('keydown', e=>{
+  if(!FOCUS || current) return; if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  if(e.key==='Escape'){ e.preventDefault(); if(brush) return; closeFocus(); }
+  else if(e.key==='ArrowRight'){ e.preventDefault(); stepFocus(1); }
+  else if(e.key==='ArrowLeft'){ e.preventDefault(); stepFocus(-1); }
+}, true);
 render();
 
 /* ===== Tata tampilan v2: pilihan urut & panel kolom ===== */
