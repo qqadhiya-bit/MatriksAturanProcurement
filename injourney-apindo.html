@@ -373,7 +373,7 @@
   html.min .hero .stats, html.min .hero .status-legend{display:none;}
   html.min .hero{padding:14px 24px 10px;}
   html.min .layout{grid-template-columns:minmax(0,1fr);} html.min .sidebar{display:none;}
-  html.min #sideToggle, html.min .status-chips{display:none;}
+  html.min #sideToggle{display:none;} html.min .status-chips{display:contents;} html.min .status-chips .st-chip{display:none;}
   html.min .tools{display:flex; position:fixed; right:18px; bottom:76px; z-index:70; flex-direction:column-reverse; align-items:flex-end; gap:8px;}
   html.min .tools-bubble{display:inline-flex; align-items:center; justify-content:center; width:46px; height:46px; border-radius:50%; border:none; background:var(--navybadge,#233761); color:#fff; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.28);}
   html.min .tools.open .tools-bubble{background:#c00000;}
@@ -381,10 +381,10 @@
   html.min .tools.open .tools-list{display:flex;}
   html.min .tools .save-mini{margin:0 !important; opacity:1;}
   .filter-row .min-btn{margin:0 6px 0 0 !important; opacity:.85;} .min-btn .mi-dn{display:none;} html.min .min-btn .mi-up{display:none;} html.min .min-btn .mi-dn{display:block;}
-  .sort-toggle{display:inline-flex; border:1.5px solid var(--line); border-radius:999px; overflow:hidden; background:var(--card); flex:none;}
+  .sort-toggle{margin-left:4px; display:inline-flex; border:1.5px solid var(--line); border-radius:999px; overflow:hidden; background:var(--card); flex:none;}
   .sort-toggle button{border:none; background:transparent; font:600 12px/1 inherit; font-family:inherit; padding:8px 12px; cursor:pointer; color:var(--ink-soft);}
   .sort-toggle button.on{background:var(--navybadge,#233761); color:#fff;}
-  html.sortap .sidebar, html.sortap #sideToggle{display:none;} html.sortap .layout{grid-template-columns:minmax(0,1fr);}
+  html.sorted .sidebar, html.sorted #sideToggle{display:none;} html.sorted .layout{grid-template-columns:minmax(0,1fr);}
 </style></head><body>
 <div class="hero"><div class="hero-inner">
   <div class="title-row"><button class="home-btn" id="homeBtn" title="Kembali ke beranda" aria-label="Kembali ke beranda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg></button><h1>Matriks Perbandingan InJourney dan Apindo</h1></div>
@@ -399,8 +399,7 @@
     <span class="kbd" id="kbdHint">/</span><button class="clear-btn" id="clearBtn" aria-label="Bersihkan pencarian">✕</button>
   </div>
   <div class="toggles" id="colToggles"></div>
-  <div class="sort-toggle" id="sortToggle"><button type="button" data-m="ij" class="on" title="Susunan mengikuti InJourney">Susunan InJourney</button><button type="button" data-m="apindo" title="Urutkan menurut nomor Pasal Apindo">Urut Pasal Apindo</button></div>
-  <div class="filter-row"><button class="save-mini min-btn" id="minView" type="button" aria-label="Ringkas atau tampilkan panel" title="Ringkas tampilan (klik lagi untuk menampilkan)"><svg class="mi-up" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg><svg class="mi-dn" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><button class="side-toggle" id="sideToggle">☰ <span>Sembunyikan Daftar BAB</span></button><div class="status-chips" id="statusChips"></div><div class="tools" id="tools"><button class="tools-bubble" id="toolsBubble" type="button" aria-label="Alat tanda merah dan simpan" title="Alat tanda merah dan simpan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><div class="tools-list"><button class="save-mini" id="brushOn" aria-label="Kuas merah" title="Kuas merah: blok teks untuk menandai merah (klik lagi untuk selesai)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></button><button class="save-mini" id="brushOff" aria-label="Penghapus merah" title="Penghapus: blok teks untuk menghapus tanda merahnya (klik lagi untuk selesai)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H9l-5.3-5.3a1 1 0 0 1 0-1.4l9.6-9.6a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4L11 20"/><path d="M8 11l5 5"/></svg></button><button class="save-mini" id="redToggle" aria-label="Tanda merah" title="Tampilkan / sembunyikan tanda merah"><svg class="ei" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eo" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button><button class="save-mini" id="saveFile" aria-label="Simpan ke file"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button></div></div></div>
+  <div class="filter-row"><button class="save-mini min-btn" id="minView" type="button" aria-label="Ringkas atau tampilkan panel" title="Ringkas tampilan (klik lagi untuk menampilkan)"><svg class="mi-up" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg><svg class="mi-dn" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><button class="side-toggle" id="sideToggle">☰ <span>Sembunyikan Daftar BAB</span></button><div class="status-chips" id="statusChips"></div><div class="sort-toggle" id="sortToggle"><button type="button" data-m="apindo" title="Urutkan menurut nomor Pasal Apindo (klik lagi untuk kembali ke susunan InJourney)">Urut Pasal Apindo</button><button type="button" data-m="ias" title="Urutkan menurut BAB dan angka Draft IAS (klik lagi untuk kembali ke susunan InJourney)">Urut Pasal IAS</button></div><div class="tools" id="tools"><button class="tools-bubble" id="toolsBubble" type="button" aria-label="Alat tanda merah dan simpan" title="Alat tanda merah dan simpan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><div class="tools-list"><button class="save-mini" id="brushOn" aria-label="Kuas merah" title="Kuas merah: blok teks untuk menandai merah (klik lagi untuk selesai)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></button><button class="save-mini" id="brushOff" aria-label="Penghapus merah" title="Penghapus: blok teks untuk menghapus tanda merahnya (klik lagi untuk selesai)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H9l-5.3-5.3a1 1 0 0 1 0-1.4l9.6-9.6a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4L11 20"/><path d="M8 11l5 5"/></svg></button><button class="save-mini" id="redToggle" aria-label="Tanda merah" title="Tampilkan / sembunyikan tanda merah"><svg class="ei" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eo" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button><button class="save-mini" id="saveFile" aria-label="Simpan ke file"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button></div></div></div>
 </div><div class="results-note" id="resultsNote"></div></div>
 <div class="layout">
   <nav class="sidebar"><div class="accordion-actions"><button class="mini-btn" id="openAll">Buka Semua</button><button class="mini-btn" id="closeAll">Tutup Semua</button></div><div id="navList"></div></nav>
@@ -548,6 +547,7 @@ function drawStatusChips(){
   stChips.innerHTML = `<button class="st-chip ${statusFilter===''?'on':''}" data-st="">Semua Status</button>` + Object.entries(STATUS).map(([k,v])=>`<button class="st-chip ${k} ${statusFilter===k?'on':''}" data-st="${k}" title="${v.desc}"><span class="sw ${k}"></span>${v.label} (${FL[k]})</button>`).join('')
     + `<button class="st-chip nonec ${statusFilter==='none'?'on':''}" data-st="none" title="${NONE_DESC}"><span class="sw none"></span>${NONE_LABEL} (${FL.none})</button>`
     + `<button class="st-chip ket ${statusFilter==='ket'?'on':''}" data-st="ket" title="${KET_DESC}"><span class="sw ket"></span>Bertentangan (${FL.ket})</button>`;
+  window._sg = window._sg || document.getElementById('sortToggle'); if(window._sg) stChips.appendChild(window._sg);
   const lg=document.getElementById('statusLegend'); if(lg) lg.innerHTML = Object.entries(STATUS).map(([k,v])=>`<span><span class="sw ${k}"></span><b>${v.label}</b>: ${v.desc}</span>`).join('') + `<span><span class="sw none"></span><b>${NONE_LABEL}</b>: ${NONE_DESC}</span>` + `<span><span class="sw ket"></span><b>Bertentangan</b>: ${KET_DESC}</span>`;
 }
 stChips.addEventListener('click', e=>{ const b=e.target.closest('[data-st]'); if(b) setStatus(b.dataset.st); });
@@ -612,7 +612,7 @@ function render(){
   if(current) commitEdit();
   computeFlags(); drawStats(); drawStatusChips();
   const q=parseQuery(query), filtering=q.length>0 || statusFilter!=='';
-  if(sortMode==='apindo'){ renderApindo(q,filtering); return; }
+  if(sortMode!=='ij'){ renderSorted(q,filtering); return; }
   let total=0, html='';
   GROUPS.forEach((g,gi)=>{
     let gHtml='', gCount=0;
@@ -886,35 +886,49 @@ document.getElementById('homeBtn').addEventListener('click', ()=>{
 });
 
 
-/* ===== Urut menurut Pasal Apindo ===== */
+/* ===== Urut menurut Pasal Apindo / Pasal Draft IAS ===== */
+const ROMAN={I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7,VIII:8,IX:9,X:10,XI:11,XII:12};
 function apPasalKey(r,ci){
-  for(const it of (r.cells[ci]||[])){ if(it.lvl!==-1||!it.text||it.text.trim()==='[-]') continue; const m=it.text.match(/Pasal (\d+)(?: angka (\d+))?/); if(m) return [+m[1], m[2]?+m[2]:0]; }
+  for(const it of (r.cells[ci]||[])){ if(it.lvl!==-1||!it.text||it.text.trim()==='[-]') continue; const m=it.text.match(/Pasal (\d+)(?: angka (\d+))?/); if(m) return {k:[+m[1], m[2]?+m[2]:0], g:'Pasal '+m[1], gt:(+m[1]===1?'Pengertian':'')}; }
   return null;
 }
-function renderApindo(q,filtering){
+function iasPasalKey(r,ci){
+  for(const it of (r.cells[ci]||[])){ if(it.lvl!==-1||!it.text||it.text.trim()==='[-]') continue; const t=it.text.trim();
+    let m=t.match(/^\[BAB ([IVXL]+)(?:\.([A-Z]))?(?:[^\]]*?angka (\d+))?/);
+    if(m && ROMAN[m[1]]) return {k:[ROMAN[m[1]], m[2]?m[2].charCodeAt(0)-64:0, m[3]?+m[3]:0], g:'BAB '+m[1]+(m[2]?'.'+m[2]:''), gt:''};
+    m=t.match(/^\[Definisi dan Istilah angka (\d+)/); if(m) return {k:[1,12,+m[1]], g:'BAB I.L', gt:'Definisi dan Istilah'}; }
+  return null;
+}
+const SORTCFG={
+  apindo:{col:'apindo', key:apPasalKey, tag:'Urutan Apindo', title:'Menurut urutan Pasal Apindo', desc:'Topik yang diatur Apindo, diurutkan dari Pasal 1 sampai pasal terakhir. Kolom InJourney dan Draft IAS ditampilkan bila membahas topik yang sama.', noTag:'Tidak ada di Apindo', noTitle:'Topik yang tidak diatur Apindo', noDesc:'Berurutan menurut susunan InJourney, lalu topik yang hanya ada di Draft IAS.'},
+  ias:{col:'draft', key:iasPasalKey, tag:'Urutan Draft IAS', title:'Menurut urutan Pasal Draft IAS', desc:'Topik yang diatur Draft IAS, diurutkan menurut BAB, huruf bagian, dan angka. Kolom InJourney dan Apindo ditampilkan bila membahas topik yang sama.', noTag:'Tidak ada di Draft IAS', noTitle:'Topik yang belum diatur Draft IAS', noDesc:'Berurutan menurut susunan InJourney, lalu topik yang hanya ada di Apindo.'}
+};
+function renderSorted(q,filtering){
+  const cfg=SORTCFG[sortMode];
   const list=[]; BABS.forEach(b=>b.subsections.forEach((s,si)=>s.rows.forEach((r,ri)=>list.push({b,s,r,bi:b._bi,si,ri,gi:b._gi,ord:list.length}))));
   const pass=x=>{ const r=x.r,gi=x.gi; if(statusFilter==='ket' ? !r.ket : statusFilter==='none' ? (r.status || gi>1) : (statusFilter && r.status!==statusFilter)) return false; if(q.length && !q.every(t=>r._hay.includes(t))) return false; return true; };
-  const ap=[], none=[];
-  list.forEach(x=>{ if(!pass(x)) return; const ci=x.s.cols.indexOf('apindo'); const key=ci>=0?apPasalKey(x.r,ci):null; if(key){ x.key=key; ap.push(x); } else none.push(x); });
-  ap.sort((a,b)=>a.key[0]-b.key[0]||a.key[1]-b.key[1]||a.ord-b.ord);
-  let html=`<div class="group-banner"><span class="tag">Urutan Apindo</span><h2>Menurut urutan Pasal Apindo</h2><p>Topik yang diatur Apindo, diurutkan dari Pasal 1 sampai pasal terakhir. Kolom InJourney dan Draft IAS ditampilkan bila membahas topik yang sama.</p></div>`;
-  let last=null, buf='';
-  const flush=()=>{ if(last!==null){ html+=`<div class="subsection"><div class="subsection-head"><span class="code">Pasal ${last}</span><h3>${last===1?'Pengertian':''}</h3><span class="cnt">${buf.n} topik</span></div>${buf.h}</div>`; } };
-  ap.forEach(x=>{ if(x.key[0]!==last){ flush(); last=x.key[0]; buf={h:'',n:0}; } buf.h+=cardHtml(x.r,x.s,x.bi,x.si,x.ri,x.gi,q); buf.n++; });
+  const hit=[], none=[];
+  list.forEach(x=>{ if(!pass(x)) return; const ci=x.s.cols.indexOf(cfg.col); const kk=ci>=0?cfg.key(x.r,ci):null; if(kk){ x.kk=kk; hit.push(x); } else none.push(x); });
+  const cmp=(a,b)=>{ for(let i=0;i<Math.max(a.length,b.length);i++){ const d=(a[i]||0)-(b[i]||0); if(d) return d; } return 0; };
+  hit.sort((a,b)=>cmp(a.kk.k,b.kk.k)||a.ord-b.ord);
+  let html=`<div class="group-banner"><span class="tag">${cfg.tag}</span><h2>${cfg.title}</h2><p>${cfg.desc}</p></div>`;
+  let lastG=null, buf=null;
+  const flush=()=>{ if(buf){ html+=`<div class="subsection"><div class="subsection-head"><span class="code">${esc(buf.g)}</span><h3>${esc(buf.gt)}</h3><span class="cnt">${buf.n} topik</span></div>${buf.h}</div>`; } };
+  hit.forEach(x=>{ if(x.kk.g!==lastG){ flush(); lastG=x.kk.g; buf={g:x.kk.g,gt:x.kk.gt,h:'',n:0}; } buf.h+=cardHtml(x.r,x.s,x.bi,x.si,x.ri,x.gi,q); buf.n++; });
   flush();
   if(none.length){
-    html+=`<div class="group-banner"><span class="tag">Tidak ada di Apindo</span><h2>Topik yang tidak diatur Apindo</h2><p>Berurutan menurut susunan InJourney, lalu topik yang hanya ada di Draft IAS.</p></div>`;
+    html+=`<div class="group-banner"><span class="tag">${cfg.noTag}</span><h2>${cfg.noTitle}</h2><p>${cfg.noDesc}</p></div>`;
     let lb=null, bh='', bn=0; const fl=()=>{ if(lb){ html+=`<div class="subsection"><div class="subsection-head"><span class="code">${esc(lb.code)}</span><h3>${esc(lb.title)}</h3><span class="cnt">${bn} topik</span></div>${bh}</div>`; } };
     none.forEach(x=>{ if(x.b!==lb){ fl(); lb=x.b; bh=''; bn=0; } bh+=cardHtml(x.r,x.s,x.bi,x.si,x.ri,x.gi,q); bn++; });
     fl();
   }
-  if(!ap.length && !none.length) html=`<div class="empty-state"><div class="big">Tidak ada hasil</div>Coba kata kunci lain.</div>`;
+  if(!hit.length && !none.length) html=`<div class="empty-state"><div class="big">Tidak ada hasil</div>Coba kata kunci lain.</div>`;
   main.innerHTML=html;
-  resultsNote.textContent = filtering ? `${ap.length+none.length} topik cocok` : '';
+  resultsNote.textContent = filtering ? `${hit.length+none.length} topik cocok` : '';
 }
 (function(){
-  const tg=document.getElementById('sortToggle');
-  tg.addEventListener('click',e=>{ const b=e.target.closest('button[data-m]'); if(!b) return; sortMode=b.dataset.m; tg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); document.documentElement.classList.toggle('sortap',sortMode==='apindo'); render(); window.scrollTo({top:0}); });
+  const tg=window._sg || document.getElementById('sortToggle');
+  tg.addEventListener('click',e=>{ const b=e.target.closest('button[data-m]'); if(!b) return; sortMode = (sortMode===b.dataset.m) ? 'ij' : b.dataset.m; tg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.m===sortMode)); document.documentElement.classList.toggle('sorted',sortMode!=='ij'); render(); window.scrollTo({top:0}); });
 })();
 
 /* ===== Ringkas tampilan ===== */
