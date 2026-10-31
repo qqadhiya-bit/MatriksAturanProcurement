@@ -456,6 +456,20 @@
   .nav-item.nocode .ttl{font-weight:600; text-align:left;}
   .nav-item.nocode[disabled]{opacity:.55; cursor:default;}
   @media (max-width:760px){ .top-wrap{flex:1 0 100%;} .top-wrap .status-chips{flex:1 1 auto; overflow-x:auto; flex-wrap:nowrap;} }
+
+  /* ===== Urut menurut tiap aturan ===== */
+  .sort-toggle{display:inline-flex; align-items:stretch; flex-wrap:wrap; border:1.5px solid var(--line); border-radius:999px; overflow:hidden; background:var(--card); flex:none;}
+  .sort-toggle .sort-lbl{display:inline-flex; align-items:center; padding:0 10px 0 12px; font-size:12px; font-weight:600; color:var(--ink-soft); border-right:1px solid var(--line);}
+  .sort-toggle button{border:none; background:transparent; font:600 12px/1 inherit; font-family:inherit; padding:7px 11px; cursor:pointer; color:var(--ink-soft); white-space:nowrap;}
+  .sort-toggle button + button{border-left:1px solid var(--line-soft);}
+  .sort-toggle button:hover{color:var(--ink); background:var(--paper);}
+  .sort-toggle button.on{background:var(--navybadge,#233761); color:#fff;}
+  .top-wrap{flex-wrap:wrap;}
+  .subsection-head .sub-grp{font-weight:400; color:var(--ink-soft); font-size:12px;}
+  html.sorted .sidebar, html.sorted #sideToggle, html.sorted .mobile-nav{display:none !important;}
+  html.sorted .layout{grid-template-columns:minmax(0,1fr) !important;}
+  .cols6 .col.sort-col{box-shadow:inset 0 3px 0 var(--navybadge,#233761);}
+  @media (max-width:760px){ .sort-toggle{flex-wrap:nowrap; overflow-x:auto; max-width:100%;} }
 </style></head><body>
 <div class="hero"><div class="hero-inner">
   <div class="title-row"><button class="home-btn" id="homeBtn" title="Kembali ke beranda" aria-label="Kembali ke beranda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M11 18l-6-6 6-6"></path></svg></button><h1>Matriks Perbandingan Anak Usaha</h1></div>
@@ -469,7 +483,7 @@
     <input id="search" type="text" placeholder="" autocomplete="off">
     <span class="kbd" id="kbdHint">/</span><button class="clear-btn" id="clearBtn" aria-label="Bersihkan pencarian">✕</button>
   </div>
-  <div class="top-wrap"><div class="status-chips" id="statusChips"></div></div>
+  <div class="top-wrap"><div class="status-chips" id="statusChips"></div><div class="sort-toggle" id="sortToggle"><span class="sort-lbl">Urut</span></div></div>
   <div class="filter-row"><button class="side-toggle" id="sideToggle" aria-expanded="true">☰ <span>Sembunyikan Daftar BAB</span></button><div class="toggles" id="colToggles"></div><button class="save-mini" id="saveFile" aria-label="Simpan ke file"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></button></div>
 </div><div class="results-note" id="resultsNote"></div></div>
 <div class="layout">
@@ -573,7 +587,7 @@ function flagsHtml(f){ return ['bertentangan'].filter(k=>f&&f[k]).map(k=>`<span 
 const stChips = document.getElementById('statusChips');
 function drawStatusChips(){
   stChips.innerHTML = `<button class="st-chip ${statusFilter===''?'on':''}" data-st="">Semua Status</button>` +
-    ST_ORDER.map(k=>`<button class="st-chip ${k} ${statusFilter===k?'on':''}" data-st="${k}" title="${STATUS[k].tip}"><span class="sw ${k}"></span>${STATUS[k].label} (${FL[k]})</button>`).join('');
+    ['bertentangan'].map(k=>`<button class="st-chip ${k} ${statusFilter===k?'on':''}" data-st="${k}" title="${STATUS[k].tip}"><span class="sw ${k}"></span>${STATUS[k].label} (${FL[k]})</button>`).join('');
   const lg = document.getElementById('statusLegend'); if(lg) lg.innerHTML = ST_ORDER.map(k=>`<span><span class="sw ${k}"></span><b>${STATUS[k].label}</b>: ${STATUS[k].tip}</span>`).join('');
 }
 stChips.addEventListener('click', e=>{ const b=e.target.closest('[data-st]'); if(!b) return; statusFilter = (statusFilter===b.dataset.st ? '' : b.dataset.st); if(statusFilter) openState = BABS.map(()=>true); render(); });
@@ -697,13 +711,21 @@ function spy(){
 const main = document.getElementById('main');
 const resultsNote = document.getElementById('resultsNote');
 let curG=0;
-function drawColbar(){ const vis = COLS.map((c,i)=>i).filter(i=>colState[i] && !(curG===2 && i<2)); colbarInner.innerHTML = vis.map(i=>`<div class="c${i}"><span class="dot c${i}"></span>${esc(COLS[i])}</div>`).join(''); }
+function drawColbar(){ const vis = COLS.map((c,i)=>i).filter(i=>colState[i] && (sortMode>=0 || !(curG===2 && i<2))); colbarInner.innerHTML = vis.map(i=>`<div class="c${i}"><span class="dot c${i}"></span>${esc(COLS[i])}</div>`).join(''); }
+function cardHtml(b,s,r,bi,si,ri,q,dupN){
+        const L = `${bi}-${si}-${ri}`, sk = stOf(r), sc = r.status ? ' st-'+r.status : '';
+        const same = norm(r.topik).replace(/[^a-z0-9]/g,'') === norm(s._h.title).replace(/[^a-z0-9]/g,'');
+        return `<div class="topic-card${sc}" id="row-${bi}-${si}-${ri}${dupN?'-d'+dupN:''}"><div class="topic-title"><span class="tt-text">${highlight(r.topik,q)}</span>${r.status?`<button class="pill ${sk} st-pick" data-loc="${L}" title="Klik untuk mengganti status">${STATUS[sk].label} ▾</button>`:`<button class="st-pick ghost" data-loc="${L}" title="Beri tanda status">○ Tandai ▾</button>`}${penBtn('topik',`${bi}-${si}-${ri}`)}</div>
+          <div class="h-scroll"><div class="cols6">${r.cells.map((c,ci)=>`<div class="col c${ci}${ci===sortMode?' sort-col':''} ${(colState[ci] && (sortMode>=0 || !(b.g===2 && ci<2)))?'':'hidden-col'}"><span class="col-label c${ci}">${esc(COLS[ci])}</span>${penBtn('cell',`${bi}-${si}-${ri}-${ci}`)}<div class="col-text">${renderCell(c,q)}</div></div>`).join('')}</div></div><div class="extras two"><div class="extra-block analysis-block"><div class="extra-head"><span class="extra-label">Analisis</span></div>${penBtn('analisis',L)}<div class="extra-text${r.analisis?'':' empty'}">${r.analisis?highlight(r.analisis,q):'Belum ada analisis.'}</div></div>
+          <div class="extra-block note-block${sc}"><div class="extra-head"><span class="extra-label">Catatan</span></div>${penBtn('catatan',L)}<div class="extra-text${r.catatan?'':' empty'}">${r.catatan?highlight(r.catatan,q):'Belum ada catatan.'}</div></div></div></div>`;
+}
 function render(){
   if(current) commitEdit();
   computeFlags(); drawStatusChips();
   const q = parseQuery(query); const filtering = q.length>0 || statusFilter!=='' || grpFilter>0;
   const vis = COLS.map((c,i)=>i).filter(i=>colState[i]);
   drawColbar();
+  if(sortMode>=0){ renderSorted(q,filtering); return; }
   let total=0, html='', lastG=-1;
   BABS.forEach((b,bi)=>{
     let babHtml='', babCount=0;
@@ -713,12 +735,8 @@ function render(){
         if(statusFilter && stOf(r)!==statusFilter) return;
         if(grpFilter && grpOf(s,r)!==grpFilter) return;
         if(q.length && !q.every(t=> r._hay.includes(t))) return;
-        const L = `${bi}-${si}-${ri}`, sk = stOf(r), sc = r.status ? ' st-'+r.status : '';
         n++;
-        const same = norm(r.topik).replace(/[^a-z0-9]/g,'') === norm(s._h.title).replace(/[^a-z0-9]/g,'');
-        rowsHtml += `<div class="topic-card${sc}" id="row-${bi}-${si}-${ri}"><div class="topic-title"><span class="tt-text">${highlight(r.topik,q)}</span>${r.status?`<button class="pill ${sk} st-pick" data-loc="${L}" title="Klik untuk mengganti status">${STATUS[sk].label} ▾</button>`:`<button class="st-pick ghost" data-loc="${L}" title="Beri tanda status">○ Tandai ▾</button>`}${penBtn('topik',`${bi}-${si}-${ri}`)}</div>
-          <div class="h-scroll"><div class="cols6">${r.cells.map((c,ci)=>`<div class="col c${ci} ${(colState[ci] && !(b.g===2 && ci<2))?'':'hidden-col'}"><span class="col-label c${ci}">${esc(COLS[ci])}</span>${penBtn('cell',`${bi}-${si}-${ri}-${ci}`)}<div class="col-text">${renderCell(c,q)}</div></div>`).join('')}</div></div><div class="extras two"><div class="extra-block analysis-block"><div class="extra-head"><span class="extra-label">Analisis</span></div>${penBtn('analisis',L)}<div class="extra-text${r.analisis?'':' empty'}">${r.analisis?highlight(r.analisis,q):'Belum ada analisis.'}</div></div>
-          <div class="extra-block note-block${sc}"><div class="extra-head"><span class="extra-label">Catatan</span></div>${penBtn('catatan',L)}<div class="extra-text${r.catatan?'':' empty'}">${r.catatan?highlight(r.catatan,q):'Belum ada catatan.'}</div></div></div></div>`;
+        rowsHtml += cardHtml(b,s,r,bi,si,ri,q);
       });
       if(n){ babHtml += `<div class="subsection" id="sub-${bi}-${si}">${s._h.title?`<div class="subsection-head"><span class="code">${esc(s._h.code)}</span><h3>${esc(s._h.title)}</h3>${s.rows.length>1?`<span class="cnt">${n} topik</span>`:''}</div>`:''}${rowsHtml}</div>`; babCount+=n; }
     });
@@ -939,6 +957,75 @@ async function saveFile(){
 saveBtn.addEventListener('click', saveFile);
 document.addEventListener('keydown', e=>{ if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){ e.preventDefault(); saveFile(); } });
 updateSaveDot();
+
+/* ===== Urut menurut salah satu dari 7 aturan ===== */
+let sortMode = -1;   // -1 = susunan utama; 0-6 = indeks kolom aturan
+const ROMAN = {I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7,VIII:8,IX:9,X:10,XI:11,XII:12,XIII:13,XIV:14,XV:15};
+const hurufN = h => h ? (h.length-1)*26 + (h.charCodeAt(0)-96) : 0;
+function citesOf(cell){ return (cell||[]).filter(it=>it.c && it.c.trim()!=='[-]').map(it=>it.c.trim()); }
+function keyRoman(cell){   // Perdir IAS, Draft IAS, IAS Hospitality: [BAB I.B angka 5 huruf a]
+  const out=[];
+  citesOf(cell).forEach(c=>{ for(const m of c.matchAll(/BAB ([IVX]+)\.([A-Z])(?:-[A-Z])?((?:(?!BAB )[^\]])*)/g)){ if(!ROMAN[m[1]]) continue;
+    const rest=m[3]||'', a=rest.match(/angka (\d+)/), h=rest.match(/huruf ([a-z]+)/);
+    out.push({k:[ROMAN[m[1]], m[2].charCodeAt(0)-64, a?+a[1]:0, h?hurufN(h[1]):0], g:'BAB '+m[1]+'.'+m[2]}); } });
+  return out;
+}
+function keyPasal(cell){   // AP Supports, IAS Property, IAS Support: [Pasal 8 ayat (2)], [Keputusan Pasal 1]
+  const out=[];
+  citesOf(cell).forEach(c=>{ for(const m of c.matchAll(/(Keputusan )?Pasal (\d+)((?:(?!Pasal )[^\]])*)/g)){
+    const rest=m[3]||'', ay=rest.match(/(?:ayat \(|angka )(\d+)/), h=rest.match(/huruf ([a-z]+)/), kep=!!m[1];
+    out.push({k:[kep?0:1, +m[2], ay?+ay[1]:0, h?hurufN(h[1]):0], g:(kep?'Keputusan Pasal ':'Pasal ')+m[2]}); } });
+  return out;
+}
+function keyGapura(cell){  // Gapura: [BAB 2 angka 2.19.1], [BAB 1 angka 1.3.0 angka 10]
+  const out=[];
+  citesOf(cell).forEach(c=>{ for(const m of c.matchAll(/BAB (\d+) angka (\d+)\.(\d+)(?:\.(\d+))?((?:(?!BAB )[^\]])*)/g)){
+    const rest=m[5]||'', a=rest.match(/^\s*angka (\d+)/), h=rest.match(/huruf ([a-z]+)/);
+    out.push({k:[+m[1], +m[2], +m[3], m[4]?+m[4]:0, a?+a[1]:0, h?hurufN(h[1]):0], g:'BAB '+m[1]}); } });
+  return out;
+}
+const SORTKEY = [keyRoman, keyRoman, keyPasal, keyGapura, keyRoman, keyPasal, keyPasal];
+const SORTDESC = ['BAB, huruf bagian, dan angka Perdir IAS','BAB, huruf bagian, dan angka Draft IAS','nomor Pasal AP Supports (diawali pasal Keputusan)','BAB dan nomor butir Gapura','BAB, huruf bagian, dan angka IAS Hospitality','nomor Pasal IAS Property','nomor Pasal IAS Support'];
+function renderSorted(q,filtering){
+  const ci = sortMode, name = COLS[ci];
+  const cmp=(a,b)=>{ for(let i=0;i<Math.max(a.length,b.length);i++){ const d=(a[i]||0)-(b[i]||0); if(d) return d; } return 0; };
+  const hit=[], none=[]; let ord=0;
+  BABS.forEach((b,bi)=>b.subsections.forEach((s,si)=>s.rows.forEach((r,ri)=>{
+    ord++;
+    if(statusFilter && stOf(r)!==statusFilter) return;
+    if(q.length && !q.every(t=>r._hay.includes(t))) return;
+    const x={b,s,r,bi,si,ri,ord};
+    const best={}; SORTKEY[ci](r.cells[ci]).forEach(kk=>{ if(!best[kk.g] || cmp(kk.k,best[kk.g].k)<0) best[kk.g]=kk; });
+    const kks=Object.values(best);
+    if(kks.length && !isTD(r.cells[ci])) kks.forEach((kk,n)=>hit.push(Object.assign({},x,{kk,dup:n}))); else none.push(x);
+  })));
+  hit.sort((a,b)=>cmp(a.kk.k,b.kk.k)||a.ord-b.ord);
+  const nTopik = new Set(hit.map(x=>x.ord)).size;
+  let html=`<div class="group-banner"><span class="tag">Urutan ${esc(name)}</span><h2>Menurut urutan ${esc(name)}</h2><p>Topik yang diatur ${esc(name)} (${nTopik} topik), diurutkan menurut ${esc(SORTDESC[ci])}. Kolom aturan lain ditampilkan bila membahas topik yang sama. Topik yang dirujuk di lebih dari satu bagian ${esc(name)} ditampilkan di setiap bagian tersebut. Klik lagi tombol ${esc(name)} untuk kembali ke susunan utama.</p></div>`;
+  let lastG=null, buf=null;
+  const flush=()=>{ if(buf) html+=`<div class="subsection"><div class="subsection-head"><span class="code">${esc(buf.g)}</span><h3></h3><span class="cnt">${buf.n} topik</span></div>${buf.h}</div>`; };
+  hit.forEach(x=>{ if(x.kk.g!==lastG){ flush(); lastG=x.kk.g; buf={g:x.kk.g,h:'',n:0}; } buf.h+=cardHtml(x.b,x.s,x.r,x.bi,x.si,x.ri,q,x.dup); buf.n++; });
+  flush();
+  if(none.length){
+    html+=`<div class="group-banner"><span class="tag">Tidak ada di ${esc(name)}</span><h2>Topik yang tidak diatur ${esc(name)}</h2><p>Berurutan menurut susunan utama matriks.</p></div>`;
+    let lb=null, bh='', bn=0; const fl=()=>{ if(lb) html+=`<div class="subsection"><div class="subsection-head"><span class="code">${esc(lb._h.code)}</span><h3>${esc(lb._h.title)}<span class="sub-grp"> · ${esc(GSHORT[lb.g])}</span></h3><span class="cnt">${bn} topik</span></div>${bh}</div>`; };
+    none.forEach(x=>{ if(x.b!==lb){ fl(); lb=x.b; bh=''; bn=0; } bh+=cardHtml(x.b,x.s,x.r,x.bi,x.si,x.ri,q); bn++; });
+    fl();
+  }
+  if(!hit.length && !none.length) html=`<div class="empty-state"><div class="big">Tidak ada hasil</div>Coba kata kunci atau filter lain.</div>`;
+  main.innerHTML=html;
+  const total = new Set(hit.map(x=>x.ord).concat(none.map(x=>x.ord))).size;
+  const parts=[]; if(q.length) parts.push(`semua kata: ${q.map(t=>'"'+t+'"').join(' + ')}`); if(statusFilter) parts.push(`status "${STATUS[statusFilter].label}"`);
+  resultsNote.textContent = filtering ? `${total} topik cocok untuk ${parts.join(' dan ')}` : '';
+  requestAnimationFrame(()=>{ if(typeof setTbh==='function') setTbh(); syncAll(Math.min(scrollX, maxX())); });
+}
+(function(){
+  const tg=document.getElementById('sortToggle');
+  tg.insertAdjacentHTML('beforeend', COLS.map((c,i)=>`<button type="button" data-m="${i}" title="Urutkan menurut ${esc(c)} (klik lagi untuk kembali ke susunan utama)">${esc(c)}</button>`).join(''));
+  tg.addEventListener('click',e=>{ const b=e.target.closest('button[data-m]'); if(!b) return; const m=+b.dataset.m; sortMode = (sortMode===m) ? -1 : m; tg.querySelectorAll('button[data-m]').forEach(x=>x.classList.toggle('on',+x.dataset.m===sortMode)); document.documentElement.classList.toggle('sorted',sortMode>=0); if(sortMode<0) curG=0; render(); window.scrollTo({top:0});
+    if(sortMode>=0) requestAnimationFrame(()=>requestAnimationFrame(()=>{ const vis=COLS.map((c,i)=>i).filter(i=>colState[i]); const k=vis.indexOf(sortMode); if(k<0) return; const sc=scrollers()[0]; const view=sc?sc.clientWidth:COLW; const left=k*COLW, right=left+COLW; let x=scrollX; if(left<x) x=left; else if(right>x+view) x=right-view; x=Math.max(0,Math.min(maxX(),x)); colbarScroll.scrollLeft=x; syncAll(x); }));
+  });
+})();
 render();
 
 document.getElementById('homeBtn').addEventListener('click', ()=>{
