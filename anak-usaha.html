@@ -669,6 +669,13 @@
   .fo-zoom button{padding:4px 8px; font-size:11px;}
   .fo-zoom .zfit{font-size:10.5px;}
   .fo-pos{font-size:10.5px; padding:2px 7px;}
+  .fo-tools{display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; background:#fff;}
+  .fo-tools button{border:none; background:transparent; color:var(--ink); padding:4px 8px; cursor:pointer; display:inline-flex; align-items:center;}
+  .fo-tools button + button{border-left:1px solid var(--line-soft);}
+  .fo-tools button:hover{background:var(--paper);}
+  .fo-tools button.act{background:#fff0f0; color:#c00000;}
+  .fo-tools svg{width:13px; height:13px;}
+  .fo-tools .eo{display:none;} html.nored .fo-tools .ei{display:none;} html.nored .fo-tools .eo{display:block;}
   .fo-x{width:24px; height:24px; font-size:11px; border-width:1px;}
   .fo-body{padding:8px 10px !important;}
   .fo-foot{padding:4px 10px; gap:8px; align-items:center;}
@@ -1193,7 +1200,8 @@ async function saveFile(){
 saveBtn.addEventListener('click', saveFile);
 /* ===== Kuas merah & penghapus (seperti matriks InJourney-Apindo) ===== */
 let brush=null;
-function setBrush(m){ brush=(brush===m)?null:m; document.documentElement.classList.toggle('brush',!!brush); document.getElementById('brushOn').classList.toggle('act',brush==='on'); document.getElementById('brushOff').classList.toggle('act',brush==='off'); if(brush) toastMsg(brush==='on'?'Kuas merah aktif: blok teks yang mau dimerahkan.':'Penghapus aktif: blok teks yang mau dihapus merahnya.'); }
+function syncFoTools(){ const ov=document.getElementById('focusOv'); if(!ov) return; ov.querySelector('[data-act="bon"]').classList.toggle('act',brush==='on'); ov.querySelector('[data-act="boff"]').classList.toggle('act',brush==='off'); }
+function setBrush(m){ brush=(brush===m)?null:m; document.documentElement.classList.toggle('brush',!!brush); document.getElementById('brushOn').classList.toggle('act',brush==='on'); document.getElementById('brushOff').classList.toggle('act',brush==='off'); syncFoTools(); if(brush) toastMsg(brush==='on'?'Kuas merah aktif: blok teks yang mau dimerahkan.':'Penghapus aktif: blok teks yang mau dihapus merahnya.'); }
 function offsetIn(container, node, off){ const rg=document.createRange(); rg.setStart(container,0); rg.setEnd(node,off); return rg.toString().length; }
 function addRange(rr,a,b){ const out=[]; [...(rr||[]),[a,b]].sort((x,y)=>x[0]-y[0]).forEach(([x,y])=>{ if(out.length && x<=out[out.length-1][1]) out[out.length-1][1]=Math.max(out[out.length-1][1],y); else out.push([x,y]); }); return out; }
 function subRange(rr,a,b){ const out=[]; (rr||[]).forEach(([x,y])=>{ if(y<=a || x>=b){ out.push([x,y]); return; } if(x<a) out.push([x,a]); if(y>b) out.push([b,y]); }); return out; }
@@ -1340,11 +1348,13 @@ function drawFocus(nav){
   if(!FOV){
     fresh=true; FOV=document.createElement('div'); FOV.className='focus-ov opening'; FOV.id='focusOv';
     FOV.innerHTML = `<div class="fo-panel" role="dialog" aria-modal="true" aria-label="Fokus topik">
-      <div class="fo-head"><div class="fo-crumb"></div><div class="fo-right"><div class="fo-zoom" role="group" aria-label="Ukuran teks"><button data-act="zout" title="Perkecil teks">A−</button><button data-act="zfit" class="zfit" title="Pas satu layar (otomatis)">Pas layar</button><button data-act="zin" title="Perbesar teks">A+</button></div><span class="fo-pos"></span><button class="fo-x" data-act="close" title="Keluar dari mode fokus (Esc)" aria-label="Tutup">✕</button></div></div>
+      <div class="fo-head"><div class="fo-crumb"></div><div class="fo-right"><div class="fo-tools" role="group" aria-label="Alat tanda merah"><button data-act="bon" title="Kuas merah: blok teks untuk menandai merah (klik lagi untuk selesai)" aria-label="Kuas merah"></button><button data-act="boff" title="Penghapus: blok teks untuk menghapus tanda merahnya (klik lagi untuk selesai)" aria-label="Penghapus merah"></button><button data-act="red" title="Tampilkan / sembunyikan tanda merah" aria-label="Tanda merah"></button></div><div class="fo-zoom" role="group" aria-label="Ukuran teks"><button data-act="zout" title="Perkecil teks">A−</button><button data-act="zfit" class="zfit" title="Pas satu layar (otomatis)">Pas layar</button><button data-act="zin" title="Perbesar teks">A+</button></div><span class="fo-pos"></span><button class="fo-x" data-act="close" title="Keluar dari mode fokus (Esc)" aria-label="Tutup">✕</button></div></div>
       <div class="fo-body"></div>
       <div class="fo-foot"><button class="fo-nav" data-act="prev"><span class="ar">‹</span><span class="tx"><small>Sebelumnya</small><span class="nm"></span></span></button>
         <button class="fo-nav nx" data-act="next"><span class="tx"><small>Berikutnya</small><span class="nm"></span></span><span class="ar">›</span></button></div></div>`;
     setTimeout(()=>{ if(FOV) FOV.classList.remove('opening'); }, 260);
+    [['bon','brushOn'],['boff','brushOff'],['red','redToggle']].forEach(([k,id])=>{ FOV.querySelector(`[data-act="${k}"]`).innerHTML=document.getElementById(id).innerHTML; });
+    syncFoTools();
   }
   if(!FOV.isConnected) mainEl.appendChild(FOV);
   const body=FOV.querySelector('.fo-body'), keep=nav?0:body.scrollTop;
@@ -1360,7 +1370,7 @@ function drawFocus(nav){
 }
 mainEl.addEventListener('click', e=>{
   const ov=e.target.closest('#focusOv');
-  if(ov){ const a=e.target.closest('[data-act]'); if(a){ e.stopPropagation(); const k=a.dataset.act; if(k==='close') closeFocus(); else if(k==='zin'||k==='zout'){ setZoom(Math.round((curZoom()+(k==='zin'?0.1:-0.1))*20)/20); } else if(k==='zfit'){ setZoom('auto'); } else stepFocus(k==='next'?1:-1); return; } if(e.target===ov) closeFocus(); return; }
+  if(ov){ const a=e.target.closest('[data-act]'); if(a){ e.stopPropagation(); const k=a.dataset.act; if(k==='close') closeFocus(); else if(k==='bon') setBrush('on'); else if(k==='boff') setBrush('off'); else if(k==='red') document.getElementById('redToggle').click(); else if(k==='zin'||k==='zout'){ setZoom(Math.round((curZoom()+(k==='zin'?0.1:-0.1))*20)/20); } else if(k==='zfit'){ setZoom('auto'); } else stepFocus(k==='next'?1:-1); return; } if(e.target===ov) closeFocus(); return; }
   if(brush || current) return;
   const f=e.target.closest('.fx-btn'); if(f){ e.stopPropagation(); openFocus(f.dataset.loc); return; }
   const t=e.target.closest('.tt-text'); if(t && !t.isContentEditable){ const fb=t.parentElement.querySelector('.fx-btn'); if(fb) openFocus(fb.dataset.loc); }
