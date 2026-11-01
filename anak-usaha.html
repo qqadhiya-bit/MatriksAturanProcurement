@@ -1414,7 +1414,7 @@ function renderSorted(q,filtering){
 })();
 
 /* tautan definisi -> topik yang mengaturnya */
-function seeLine(r){ if(!r.see||!r.see.length) return ''; return `<div class="see-line"><span class="see-lb">Lihat pengaturannya:</span>${r.see.map(([L,t])=>`<button type="button" class="see-btn" data-go="${L}">${esc(t)} <span class="ar">›</span></button>`).join('')}</div>`; }
+function seeLine(r){ if(!r.see||!r.see.length) return ''; return `<div class="see-line"><span class="see-lb">Lihat pengaturan:</span>${r.see.map(([L,t])=>`<button type="button" class="see-btn" data-go="${L}">${esc(t)} <span class="ar">›</span></button>`).join('')}</div>`; }
 let FOCUS_BACK=null;
 function goRow(L){
   if(FOCUS){ FOCUS_BACK=FOCUS; FOCUS=L; drawFocus(true); return; }
