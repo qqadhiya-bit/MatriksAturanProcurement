@@ -698,7 +698,7 @@ document.getElementById('brushOn').addEventListener('click',()=>setBrush('on'));
 document.getElementById('brushOff').addEventListener('click',()=>setBrush('off'));
 (function(){ const b=document.getElementById('redToggle'), k='matriks-ppu2-nored';
   const set=v=>{ document.documentElement.classList.toggle('nored',v); b.setAttribute('aria-pressed', v?'false':'true'); store.set(k, v?'1':'0'); };
-  set(store.get(k)==='1'); b.addEventListener('click',()=>set(!document.documentElement.classList.contains('nored')));
+  set(true); b.addEventListener('click',()=>set(!document.documentElement.classList.contains('nored')));
 })();
 document.addEventListener('keydown', e=>{ if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){ e.preventDefault(); save(); } });
 

@@ -1001,7 +1001,7 @@ document.getElementById('brushOff').addEventListener('click',()=>setBrush('off')
   const get=()=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
   const put=v=>{ try{ localStorage.setItem(k,v); }catch(e){} };
   const set=v=>{ document.documentElement.classList.toggle('nored',v); b.setAttribute('aria-pressed', v?'false':'true'); put(v?'1':'0'); };
-  set(get()==='1'); b.addEventListener('click',()=>set(!document.documentElement.classList.contains('nored')));
+  set(true); b.addEventListener('click',()=>set(!document.documentElement.classList.contains('nored')));
 })();
 document.addEventListener('keydown', e=>{ if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){ e.preventDefault(); save(); } });
 
