@@ -760,4 +760,54 @@ document.getElementById('homeBtn').addEventListener('click', ()=>{
   else { try{ sessionStorage.setItem('pbj-landing','1'); }catch(e){} location.href = 'index.html'; }
 });
 </script>
+<style id="sr-style">
+#srBack{position:fixed; left:16px; bottom:18px; z-index:70; display:none; align-items:center; gap:7px; background:#233761; color:#fff; border:0; border-radius:999px; padding:9px 15px 9px 12px; font:600 12.5px 'IBM Plex Sans',system-ui,sans-serif; box-shadow:0 6px 18px rgba(22,33,62,.35); cursor:pointer;}
+#srBack.show{display:inline-flex;}
+#srBack:hover{background:#16213e;}
+@media print{#srBack{display:none !important;}}
+</style>
+<script id="sr-script">
+/* Ingat posisi sebelum mencari, lalu kembali ke sana saat pencarian ditutup */
+(function(){
+  var inp=document.getElementById('search'), clr=document.getElementById('clearBtn');
+  if(!inp||!clr) return;
+  var st={active:false, anchor:null, restoring:false};
+  var btn=document.createElement('button');
+  btn.id='srBack'; btn.type='button';
+  btn.title='Tutup pencarian dan kembali ke bagian yang tadi Anda baca';
+  btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg><span>Kembali ke posisi sebelum cari</span>';
+  document.body.appendChild(btn);
+  function capture(){
+    var list=document.querySelectorAll('.topic-card[id^="row-"]'), pick=null;
+    for(var i=0;i<list.length;i++){ var r=list[i].getBoundingClientRect(); if(r.height>0 && r.bottom>140){ pick=list[i]; break; } }
+    return pick ? {id:pick.id, off:pick.getBoundingClientRect().top, y:window.scrollY} : {id:null, off:0, y:window.scrollY};
+  }
+  function restore(){
+    var a=st.anchor; if(!a) return;
+    var el=a.id ? document.getElementById(a.id) : null, y;
+    if(el && el.getBoundingClientRect().height>0){ y=el.getBoundingClientRect().top+window.scrollY-a.off; } else { y=a.y; el=null; }
+    try{ window.scrollTo({top:Math.max(0,y), behavior:'instant'}); }catch(e){ window.scrollTo(0,Math.max(0,y)); }
+    if(el){ el.classList.add('flash'); setTimeout(function(){ el.classList.remove('flash'); },1400); }
+  }
+  function finish(){
+    st.restoring=true; btn.classList.remove('show');
+    setTimeout(function(){ restore(); st.active=false; st.anchor=null; st.restoring=false; },380);
+  }
+  inp.addEventListener('input',function(){
+    var v=inp.value.trim();
+    if(v && !st.active && !st.restoring){ st.anchor=capture(); st.active=true; btn.classList.add('show'); }
+    else if(!v && st.active && !st.restoring){ finish(); }
+  });
+  clr.addEventListener('click',function(){ if(st.active && !st.restoring) finish(); },true);
+  inp.addEventListener('keydown',function(e){ if(e.key==='Escape' && st.active && !st.restoring) finish(); },true);
+  btn.addEventListener('click',function(){ if(st.active && !st.restoring){ finish(); clr.click(); } });
+  if(typeof window.resetSearch==='function'){
+    var orig=window.resetSearch;
+    window.resetSearch=function(){
+      if(!st.restoring){ st.active=false; st.anchor=null; btn.classList.remove('show'); }
+      return orig.apply(this,arguments);
+    };
+  }
+})();
+</script>
 </body></html>
