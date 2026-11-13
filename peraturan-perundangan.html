@@ -761,7 +761,7 @@ document.getElementById('homeBtn').addEventListener('click', ()=>{
 });
 </script>
 <style id="sr-style">
-#srBack{position:fixed; left:16px; bottom:18px; z-index:70; display:none; align-items:center; gap:7px; background:#233761; color:#fff; border:0; border-radius:999px; padding:9px 15px 9px 12px; font:600 12.5px 'IBM Plex Sans',system-ui,sans-serif; box-shadow:0 6px 18px rgba(22,33,62,.35); cursor:pointer;}
+#srBack{position:fixed; left:16px; bottom:18px; z-index:70; display:none; align-items:center; justify-content:center; width:42px; height:42px; background:#233761; color:#fff; border:0; border-radius:50%; padding:0; box-shadow:0 6px 18px rgba(22,33,62,.35); cursor:pointer;}
 #srBack.show{display:inline-flex;}
 #srBack:hover{background:#16213e;}
 @media print{#srBack{display:none !important;}}
@@ -774,8 +774,8 @@ document.getElementById('homeBtn').addEventListener('click', ()=>{
   var st={active:false, anchor:null, restoring:false};
   var btn=document.createElement('button');
   btn.id='srBack'; btn.type='button';
-  btn.title='Tutup pencarian dan kembali ke bagian yang tadi Anda baca';
-  btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg><span>Kembali ke posisi sebelum cari</span>';
+  btn.title='Tutup pencarian dan kembali ke bagian yang tadi Anda baca'; btn.setAttribute('aria-label','Kembali ke posisi sebelum cari');
+  btn.innerHTML='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>';
   document.body.appendChild(btn);
   function capture(){
     var list=document.querySelectorAll('.topic-card[id^="row-"]'), pick=null;
